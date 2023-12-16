@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
 import paginate from 'mongoose-paginate-v2';
-import { CategoryModel } from 'src/domain/category/schema/category.schema';
 import {
   DescriptionItemModel,
   DescriptionItemSchema,
@@ -12,11 +11,12 @@ import {
 } from 'src/domain/content/schema/dual-language.schema';
 import { FAQItemModel, FAQItemSchema } from 'src/domain/faq/schema/faq.schema';
 import { FileModel, FileSchema } from 'src/domain/file/schema/file.schema';
+import { SubCategoryModel } from 'src/domain/subcategory/schema/subcategory.schema';
 
 @Schema({ id: true })
-export class SubCategoryModel {
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Category' })
-  category: CategoryModel;
+export class TagModel {
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'SubCategory' })
+  subcategory: SubCategoryModel;
 
   @Prop({
     required: true,
@@ -62,13 +62,13 @@ export class SubCategoryModel {
   })
   faq_list: Array<FAQItemModel>;
 }
-export type SubCategoryDocument = HydratedDocument<SubCategoryModel>;
-export const SubCategorySchema = SchemaFactory.createForClass(
-  SubCategoryModel,
-).set('versionKey', false);
-
-SubCategorySchema.virtual('id').get(function () {
+export type TagDocument = HydratedDocument<TagModel>;
+export const TagSchema = SchemaFactory.createForClass(TagModel).set(
+  'versionKey',
+  false,
+);
+TagSchema.virtual('id').get(function () {
   return this._id.toHexString();
 });
 
-SubCategorySchema.plugin(paginate);
+TagSchema.plugin(paginate);

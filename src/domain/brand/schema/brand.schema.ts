@@ -13,7 +13,7 @@ import {
 import { FileModel, FileSchema } from 'src/domain/file/schema/file.schema';
 
 @Schema({ id: true })
-export class Brand {
+export class BrandModel {
   @Prop({
     required: true,
     type: DualLanguageTextSchema,
@@ -37,8 +37,8 @@ export class Brand {
   })
   faq_list: FAQItemModel[];
 }
-export type BrandDocument = HydratedDocument<Brand>;
-export const BrandSchema = SchemaFactory.createForClass(Brand).set(
+export type BrandDocument = HydratedDocument<BrandModel>;
+export const BrandSchema = SchemaFactory.createForClass(BrandModel).set(
   'versionKey',
   false,
 );
