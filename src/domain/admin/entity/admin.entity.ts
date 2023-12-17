@@ -1,7 +1,7 @@
 import { RolesEnum } from '../constant/admin-role.enum';
 import { AdminStatusEnum } from '../constant/admin-status.enum';
 
-export class AdminModel {
+export class Admin {
   id: string;
   email: string;
   password: string;
