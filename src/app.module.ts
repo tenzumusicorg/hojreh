@@ -4,6 +4,9 @@ import { AppService } from './app.service';
 import { DatabaseModule } from './infrastructure/database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import { validateEnvs } from './infrastructure/config/app.configuration';
+import { MailModule } from './infrastructure/mail/mail.module';
+import { AdminPanelModule } from './application/admin-panel/admin-panel.module';
+import { RedisCacheModule } from './infrastructure/redis/redis.module';
 
 @Module({
   imports: [
@@ -12,6 +15,9 @@ import { validateEnvs } from './infrastructure/config/app.configuration';
       validate: validateEnvs,
     }),
     DatabaseModule,
+    MailModule,
+    RedisCacheModule,
+    AdminPanelModule,
   ],
   controllers: [AppController],
   providers: [AppService],

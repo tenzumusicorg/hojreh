@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Schema as MongooseSchema } from 'mongoose';
-import paginate from 'mongoose-paginate-v2';
-import { RolesEnum } from '../constant/admin-role.enum';
+import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
+import * as paginate from 'mongoose-paginate-v2';
+import { RolesEnum } from '../../auth/constant/role.enum';
 import { AdminStatusEnum } from '../constant/admin-status.enum';
 
 @Schema({ id: true })
@@ -63,8 +63,7 @@ export class AdminModel {
   created_by: AdminModel;
 }
 
-export type AdminDocument = AdminModel & Document;
-
+export type CategoryDocument = HydratedDocument<AdminModel>;
 export const AdminSchema = SchemaFactory.createForClass(AdminModel).set(
   'versionKey',
   false,
@@ -72,5 +71,4 @@ export const AdminSchema = SchemaFactory.createForClass(AdminModel).set(
 AdminSchema.virtual('id').get(function () {
   return this._id.toHexString();
 });
-
 AdminSchema.plugin(paginate);

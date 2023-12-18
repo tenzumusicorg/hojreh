@@ -1,4 +1,4 @@
-import { RolesEnum } from '../constant/admin-role.enum';
+import { RolesEnum } from '../../auth/constant/role.enum';
 import { AdminStatusEnum } from '../constant/admin-status.enum';
 
 export class Admin {

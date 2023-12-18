@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import paginate from 'mongoose-paginate-v2';
-import { RolesEnum } from 'src/domain/admin/constant/admin-role.enum';
+import { RolesEnum } from 'src/domain/auth/constant/role.enum';
 
 export enum UserStatusEnum {
   active = 'active',
