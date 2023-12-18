@@ -1,10 +1,5 @@
-import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
-import {
-  Schema as MongooseSchema,
-  Document,
-  Types,
-  HydratedDocument,
-} from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Schema as MongooseSchema, HydratedDocument } from 'mongoose';
 import { BrandModel } from 'src/domain/brand/schema/brand.schema';
 import { CategoryModel } from 'src/domain/category/schema/category.schema';
 import {
@@ -112,8 +107,7 @@ export class ProductModel {
   @Prop()
   is_published: boolean;
 }
-export type CategoryDocument = HydratedDocument<ProductModel>;
-
+export type ProductDocument = HydratedDocument<ProductModel>;
 export const ProductSchema = SchemaFactory.createForClass(ProductModel).set(
   'versionKey',
   false,
