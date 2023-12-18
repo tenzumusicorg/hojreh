@@ -4,13 +4,13 @@ import {
   Catch,
   ExceptionFilter,
   HttpStatus,
-  ForbiddenException,
+  NotFoundException,
 } from '@nestjs/common';
 import { HttpArgumentsHost } from '@nestjs/common/interfaces';
-import { ExceptionResponse } from '../exceptions/exception-response.interface';
+import { ExceptionResponse } from '../exception-response.interface';
 
-@Catch(ForbiddenException)
-export class ForbiddenExceptionFilter implements ExceptionFilter {
+@Catch(NotFoundException)
+export class NotFoundExceptionFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
     const ctx: HttpArgumentsHost = host.switchToHttp();
     const res = ctx.getResponse<ExpressResponse>();
@@ -20,15 +20,14 @@ export class ForbiddenExceptionFilter implements ExceptionFilter {
 
     const errorBody = {
       error: exception.name,
-      status: HttpStatus.FORBIDDEN,
+      status: HttpStatus.NOT_FOUND,
     };
-
     if (Array.isArray(exceptionResponse.message)) {
       Reflect.set(errorBody, 'messages', exceptionResponse.message);
     } else {
       Reflect.set(errorBody, 'message', exceptionResponse.message);
     }
 
-    return res.status(HttpStatus.FORBIDDEN).json(errorBody);
+    return res.status(HttpStatus.NOT_FOUND).json(errorBody);
   }
 }

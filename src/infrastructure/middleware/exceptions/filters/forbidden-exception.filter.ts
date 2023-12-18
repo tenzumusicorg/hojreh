@@ -4,13 +4,13 @@ import {
   Catch,
   ExceptionFilter,
   HttpStatus,
-  UnauthorizedException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { HttpArgumentsHost } from '@nestjs/common/interfaces';
-import { ExceptionResponse } from '../exceptions/exception-response.interface';
+import { ExceptionResponse } from '../exception-response.interface';
 
-@Catch(UnauthorizedException)
-export class UnauthorizedExceptionFilter implements ExceptionFilter {
+@Catch(ForbiddenException)
+export class ForbiddenExceptionFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
     const ctx: HttpArgumentsHost = host.switchToHttp();
     const res = ctx.getResponse<ExpressResponse>();
@@ -20,7 +20,7 @@ export class UnauthorizedExceptionFilter implements ExceptionFilter {
 
     const errorBody = {
       error: exception.name,
-      status: HttpStatus.UNAUTHORIZED,
+      status: HttpStatus.FORBIDDEN,
     };
 
     if (Array.isArray(exceptionResponse.message)) {
@@ -29,6 +29,6 @@ export class UnauthorizedExceptionFilter implements ExceptionFilter {
       Reflect.set(errorBody, 'message', exceptionResponse.message);
     }
 
-    return res.status(HttpStatus.UNAUTHORIZED).json(errorBody);
+    return res.status(HttpStatus.FORBIDDEN).json(errorBody);
   }
 }

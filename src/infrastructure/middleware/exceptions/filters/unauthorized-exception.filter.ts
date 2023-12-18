@@ -4,13 +4,13 @@ import {
   Catch,
   ExceptionFilter,
   HttpStatus,
-  NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { HttpArgumentsHost } from '@nestjs/common/interfaces';
-import { ExceptionResponse } from '../exceptions/exception-response.interface';
+import { ExceptionResponse } from '../exception-response.interface';
 
-@Catch(NotFoundException)
-export class NotFoundExceptionFilter implements ExceptionFilter {
+@Catch(UnauthorizedException)
+export class UnauthorizedExceptionFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
     const ctx: HttpArgumentsHost = host.switchToHttp();
     const res = ctx.getResponse<ExpressResponse>();
@@ -20,14 +20,15 @@ export class NotFoundExceptionFilter implements ExceptionFilter {
 
     const errorBody = {
       error: exception.name,
-      status: HttpStatus.NOT_FOUND,
+      status: HttpStatus.UNAUTHORIZED,
     };
+
     if (Array.isArray(exceptionResponse.message)) {
       Reflect.set(errorBody, 'messages', exceptionResponse.message);
     } else {
       Reflect.set(errorBody, 'message', exceptionResponse.message);
     }
 
-    return res.status(HttpStatus.NOT_FOUND).json(errorBody);
+    return res.status(HttpStatus.UNAUTHORIZED).json(errorBody);
   }
 }

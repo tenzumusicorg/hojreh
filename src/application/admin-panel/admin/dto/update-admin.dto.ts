@@ -8,19 +8,43 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { AdminStatusEnum } from '../../../../domain/admin/constant/admin-status.enum';
+import { AdminStatusEnum } from 'src/domain/admin/constant/admin-status.enum';
 
 export class UpdateAdminReqDto {
   @ApiProperty({
-    type: String,
+    type: Number,
     example: 'object id',
   })
-  @IsMongoId()
   @IsNotEmpty()
+  @IsMongoId()
   admin_id: string;
 
   @ApiProperty({
-    type: String,
+    type: Number,
+    example: 'admin first name',
+  })
+  @IsString()
+  @IsOptional()
+  first_name: string;
+
+  @ApiProperty({
+    type: Number,
+    example: 'admin last name',
+  })
+  @IsString()
+  @IsOptional()
+  last_name: string;
+
+  @ApiProperty({
+    type: Number,
+    example: 'testemail@tenzumusic.com',
+  })
+  @IsString()
+  @IsOptional()
+  email: string;
+
+  @ApiProperty({
+    type: Number,
     example: '12345678',
   })
   @IsString()

@@ -4,24 +4,30 @@ import {
   Catch,
   ExceptionFilter,
   HttpStatus,
+  BadRequestException,
 } from '@nestjs/common';
 import { HttpArgumentsHost } from '@nestjs/common/interfaces';
-import ValidationExceptions from '../exceptions/validation.exceptions';
-import { ExceptionResponse } from '../exceptions/exception-response.interface';
+import { ExceptionResponse } from '../exception-response.interface';
 
-@Catch(ValidationExceptions)
-export class ValidationExceptionsFilter implements ExceptionFilter {
+@Catch(BadRequestException)
+export class BadRequestExceptionFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
     const ctx: HttpArgumentsHost = host.switchToHttp();
     const res = ctx.getResponse<ExpressResponse>();
 
     const exceptionResponse: ExceptionResponse =
       exception.getResponse() as ExceptionResponse;
-
-    return res.status(HttpStatus.BAD_REQUEST).json({
+    const errorBody = {
       error: exception.name,
       status: HttpStatus.BAD_REQUEST,
-      messages: exceptionResponse.messages,
-    });
+    };
+
+    if (Array.isArray(exceptionResponse.message)) {
+      Reflect.set(errorBody, 'messages', exceptionResponse.message);
+    } else {
+      Reflect.set(errorBody, 'message', exceptionResponse.message);
+    }
+
+    return res.status(HttpStatus.BAD_REQUEST).json(errorBody);
   }
 }

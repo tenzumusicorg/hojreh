@@ -63,11 +63,12 @@ export class AdminModel {
   created_by: AdminModel;
 }
 
-export type CategoryDocument = HydratedDocument<AdminModel>;
+export type AdminDocument = HydratedDocument<AdminModel>;
 export const AdminSchema = SchemaFactory.createForClass(AdminModel).set(
   'versionKey',
   false,
 );
+
 AdminSchema.virtual('id').get(function () {
   return this._id.toHexString();
 });

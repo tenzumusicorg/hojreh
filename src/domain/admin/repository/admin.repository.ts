@@ -1,13 +1,17 @@
-import { Types, Model } from 'mongoose';
+import { Types, Model, PaginateModel } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
-import { AdminModel } from '../schema/admin.schema';
+import { AdminDocument, AdminModel } from '../schema/admin.schema';
 import { Admin } from '../entity/admin.entity';
 import { RolesEnum } from '../../auth/constant/role.enum';
 import { IAdminRepository } from '../interface/IAdmin.repository';
 @Injectable()
 export default class AdminsRepository implements IAdminRepository {
-  constructor(@InjectModel('Admin') private adminsModel: Model<AdminModel>) {}
+  constructor(
+    @InjectModel('Admin') private adminsModel: Model<AdminDocument>,
+    @InjectModel(Admin.name)
+    private pgModel: PaginateModel<AdminDocument>,
+  ) {}
 
   public async createOne(admin: Admin): Promise<Admin> {
     const newUser = await this.adminsModel.create({
@@ -25,30 +29,24 @@ export default class AdminsRepository implements IAdminRepository {
   }
 
   public async findOneByEmail(email: string): Promise<Admin | null> {
-    return this.adminsModel
-      .findOne({
-        email,
-      })
-      .lean();
+    return this.adminsModel.findOne({
+      email,
+    });
   }
 
   public async findOneByPhoneNumber(email: string): Promise<Admin | null> {
-    return this.adminsModel
-      .findOne({
-        email,
-      })
-      .lean();
+    return this.adminsModel.findOne({
+      email,
+    });
   }
 
   public async findOne(id: string): Promise<Admin | null> {
-    return this.adminsModel
-      .findOne(
-        {
-          _id: id,
-        },
-        { password: 0 },
-      )
-      .lean();
+    return this.adminsModel.findOne(
+      {
+        _id: id,
+      },
+      { password: 0 },
+    );
   }
 
   public async find(): Promise<Array<Admin>> {
@@ -79,5 +77,9 @@ export default class AdminsRepository implements IAdminRepository {
         },
       },
     );
+  }
+
+  model() {
+    return this.pgModel;
   }
 }

@@ -59,7 +59,7 @@ export class AdminItemDto {
   status: AdminStatusEnum;
 }
 
-export class GetAdminListResDto {
+export class AdminListResDto {
   @ApiProperty({
     type: AdminItemDto,
     isArray: true,
