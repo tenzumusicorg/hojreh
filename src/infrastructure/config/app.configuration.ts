@@ -73,6 +73,21 @@ class EnvironmentVariables {
 
   @IsString()
   ADMIN_ACCESS_TOKEN_SECRET: string;
+
+  @IsString()
+  S3_ENDPOINT: string;
+
+  @IsString()
+  S3_ACCESS_KEY_ID: string;
+
+  @IsString()
+  S3_SECRET_ACCESS_KEY: string;
+
+  @IsString()
+  S3_BUCKET: string;
+
+  @IsString()
+  S3_region: string;
 }
 
 export enum ConfigValues {
@@ -98,6 +113,12 @@ export enum ConfigValues {
   REDIS__PREKEY = 'REDIS__PREKEY',
   REDIS_OTP_EXPIRE_TIME = 'REDIS_OTP_EXPIRE_TIME',
   REDIS_REFRESH_TOKEN_EXPIRE_TIME = 'REDIS_REFRESH_TOKEN_EXPIRE_TIME',
+
+  S3_BUCKET = 'S3_BUCKET',
+  S3_region = 'S3_region',
+  S3_ENDPOINT = 'S3_ENDPOINT',
+  S3_ACCESS_KEY_ID = 'S3_ACCESS_KEY_ID',
+  S3_SECRET_ACCESS_KEY = 'S3_SECRET_ACCESS_KEY',
 }
 
 export function validateEnvs(config: Record<string, unknown>) {

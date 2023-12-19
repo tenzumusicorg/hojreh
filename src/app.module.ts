@@ -7,6 +7,7 @@ import { validateEnvs } from './infrastructure/config/app.configuration';
 import { MailModule } from './infrastructure/mail/mail.module';
 import { AdminPanelModule } from './application/admin-panel/admin-panel.module';
 import { RedisCacheModule } from './infrastructure/redis/redis.module';
+import { FileModule } from './infrastructure/file/file.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { RedisCacheModule } from './infrastructure/redis/redis.module';
     DatabaseModule,
     MailModule,
     RedisCacheModule,
+    FileModule,
     AdminPanelModule,
   ],
   controllers: [AppController],

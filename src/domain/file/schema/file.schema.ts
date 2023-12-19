@@ -6,11 +6,11 @@ export class FileModel {
   @Prop()
   url: string;
 
-  @Prop()
-  key: string;
+  // @Prop()
+  // key: string;
 
   @Prop()
-  size: string;
+  size: number;
 
   @Prop()
   mim_type: string;
@@ -18,7 +18,7 @@ export class FileModel {
 
 export type FileDocument = HydratedDocument<FileModel>;
 
-export const FileSchema = SchemaFactory.createForClass(File).set(
+export const FileSchema = SchemaFactory.createForClass(FileModel).set(
   'versionKey',
   false,
 );

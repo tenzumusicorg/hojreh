@@ -1,7 +1,6 @@
 export class File {
   id: string;
   url: string;
-  key: string;
-  size: string;
+  size: number;
   mim_type: string;
 }

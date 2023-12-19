@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import paginate from 'mongoose-paginate-v2';
+import * as paginate from 'mongoose-paginate-v2';
 import { HydratedDocument } from 'mongoose';
 import { FAQItemModel, FAQItemSchema } from 'src/domain/faq/schema/faq.schema';
 import {
