@@ -1,20 +1,26 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
 import {
   IsArray,
+  IsMongoId,
   IsNotEmpty,
+  IsOptional,
   IsString,
-  IsUrl,
   ValidateNested,
 } from 'class-validator';
+import { Type } from 'class-transformer';
 import { DescriptionItemDto } from 'src/domain/content/dto/description-item.dto';
 
-export class CreateBrandReqDto {
+export class UpdateBrandReqDto {
+  @ApiProperty({ type: String, example: '6406f19211c2440bc2e12f1b' })
+  @IsNotEmpty()
+  @IsMongoId()
+  brand_id: string;
+
   @ApiProperty({
     type: String,
     example: 'یوهاما',
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   name_fa: string;
 
@@ -22,12 +28,13 @@ export class CreateBrandReqDto {
     type: String,
     example: 'yohama',
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   name_en: string;
 
   @ApiProperty({ type: String, example: 's3 url' })
-  @IsUrl()
+  @IsOptional()
+  @IsMongoId()
   logo: string;
 
   @ApiProperty({

@@ -9,13 +9,11 @@ const uuid = new ShortUniqueId({ length: 8 });
 export class UploadFileDto {
   key: string;
   file: Buffer;
-  bucket: string;
   ACL: ObjectCannedACL = 'public-read';
   type: string;
-  constructor(uploadedFile: Express.Multer.File, bucket: string) {
+  constructor(uploadedFile: Express.Multer.File) {
     this.key = setKey(uploadedFile);
     this.file = uploadedFile.buffer;
-    this.bucket = bucket;
     this.ACL = 'public-read';
     this.type = uploadedFile.mimetype;
   }

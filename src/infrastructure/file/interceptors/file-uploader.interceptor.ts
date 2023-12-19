@@ -22,7 +22,6 @@ export default class FileUploaderInterceptor implements NestInterceptor {
     let uploadUrl = await this.fileService.uploadFile({
       file: file.buffer,
       key: file.originalname,
-      bucket: this.fileService.getS3Bucket(),
       ACL: 'public-read',
       type: file.mimetype,
     });

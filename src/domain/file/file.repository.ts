@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { File } from './entity/file.entity';
+import { CreateFileDto } from './dto/create-file.dto';
 
 @Injectable()
 export default class FileRepository {
   constructor() {}
 
-  createFile(mimType: string, size: number, url: string) {
+  createFile(dto: CreateFileDto) {
     let file = new File();
-    file.size = size;
-    file.url = url;
-    file.mim_type = mimType;
-
+    file.size = dto.size;
+    file.url = dto.url;
+    file.mim_type = dto.mimType;
     return file;
   }
 }

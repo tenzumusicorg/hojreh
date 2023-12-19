@@ -10,6 +10,7 @@ import {
   Patch,
   Post,
   Request,
+  UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import {
@@ -26,6 +27,15 @@ import AdminAuth from '../auth/decorator/admin-auth.decorator';
 import { SuccessResponse } from 'src/infrastructure/middleware/interceptors/success.constant';
 import { CommandBus } from '@nestjs/cqrs';
 import { CreateBrandCommand } from './command/create-brand.command';
+import UploadFileResponse, {
+  UploadFileDto,
+} from 'src/infrastructure/file/dto/upload-file.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import FileService from 'src/infrastructure/file/file.service';
+import ParseObjectIdPipe from 'src/infrastructure/middleware/pipes/parse-object-id.pipe';
+import { DeleteBrandCommand } from './command/delete-brand.command';
+import { UpdateBrandReqDto } from './dto/update-brand.dto';
+import { UpdateBrandCommand } from './command/update-brand.command';
 // import FileService from 'src/modules/app/file/file.service';
 // import { BrandService } from './brand.service';
 // import { SuccessResponse } from 'src/constants/success.constant';
@@ -54,7 +64,7 @@ import { CreateBrandCommand } from './command/create-brand.command';
 @Controller()
 export class BrandController {
   constructor(
-    // private readonly fileService: FileService,
+    private readonly fileService: FileService,
     private readonly commandBus: CommandBus,
   ) {}
 
@@ -77,41 +87,34 @@ export class BrandController {
     return new SuccessResponse();
   }
 
-  // @Post('upload-logo')
-  // @ApiBearerAuth()
-  // @Auth()
-  // @ApiConsumes('multipart/form-data')
-  // @ApiBody({
-  //   schema: {
-  //     type: 'object',
-  //     properties: {
-  //       logo: {
-  //         type: 'string',
-  //         format: 'binary',
-  //       },
-  //     },
-  //   },
-  // })
-  // @ApiResponse({ type: UploadFileResponse })
-  // @UseInterceptors(FileInterceptor('logo'))
-  // async uploadBrandLogo(
-  //   @Request() req: Express.Request,
-  // ): Promise<UploadFileResponse> {
-  //   if (req.file) {
-  //     const file = req.file;
-  //     let createdFile = await this.fileService.saveFile(
-  //       file.buffer,
-  //       file.originalname,
-  //       WEBSITE_BUCKET,
-  //       FileTypeEnum.IMAGE,
-  //       file.mimetype
-  //     );
-
-  //     return new UploadFileResponse(createdFile._id);
-  //   } else {
-  //     throw new BadRequestException(BadRequestExceptionMessage);
-  //   }
-  // }
+  @Post('upload-logo')
+  @ApiBearerAuth()
+  @AdminAuth()
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        logo: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @ApiResponse({ type: UploadFileResponse })
+  @UseInterceptors(FileInterceptor('logo'))
+  async uploadBrandLogo(
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<UploadFileResponse> {
+    let uploadDto = new UploadFileDto(file);
+    let res = new UploadFileResponse();
+    res.url = await this.fileService.uploadFile(uploadDto);
+    res.mim_type = file.mimetype;
+    res.size = file.size;
+    res;
+    return res;
+  }
 
   // @Post('list')
   // // @ApiBearerAuth()
@@ -147,31 +150,39 @@ export class BrandController {
   //   return this.brandService.getBrandDetail(id);
   // }
 
-  // @Patch()
-  // @ApiBearerAuth()
-  // @Auth()
-  // @ApiBody({ type: UpdateBrandReqDto })
-  // @ApiOkResponse({ type: SuccessResponse })
-  // async updateBrand(@Body() request: UpdateBrandReqDto) {
-  //   await this.brandService.updateBrand(request);
-  //   return new SuccessResponse();
-  // }
+  @Patch()
+  @ApiBearerAuth()
+  @AdminAuth()
+  @ApiBody({ type: UpdateBrandReqDto })
+  @ApiOkResponse({ type: SuccessResponse })
+  async updateBrand(@Body() request: UpdateBrandReqDto) {
+    this.commandBus.execute(
+      new UpdateBrandCommand(
+        request.brand_id,
+        request.name_fa,
+        request.name_en,
+        request.logo,
+        request.descriptions,
+      ),
+    );
+    return new SuccessResponse();
+  }
 
-  // @Delete(':id')
-  // @ApiBearerAuth()
-  // @Auth()
-  // @ApiParam({
-  //   name: 'id',
-  //   type: String,
-  //   required: true,
-  //   description: 'id of element',
-  // })
-  // async deleteBrand(
-  //   @Param('id', new ParseObjectIdPipe()) id: Types.ObjectId,
-  // ): Promise<SuccessResponse> {
-  //   await this.brandService.deleteBrand(id);
-  //   return new SuccessResponse();
-  // }
+  @Delete(':id')
+  @ApiBearerAuth()
+  @AdminAuth()
+  @ApiParam({
+    name: 'id',
+    type: String,
+    required: true,
+    description: 'id of element',
+  })
+  async deleteBrand(
+    @Param('id', new ParseObjectIdPipe()) id: string,
+  ): Promise<SuccessResponse> {
+    this.commandBus.execute(new DeleteBrandCommand(id));
+    return new SuccessResponse();
+  }
 
   // @Post('faq-list/add')
   // @ApiBearerAuth()

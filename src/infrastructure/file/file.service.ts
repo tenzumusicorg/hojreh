@@ -7,6 +7,8 @@ import S3Service from './s3.service';
 import { ConfigService } from '@nestjs/config';
 import { UploadFileDto } from './dto/upload-file.dto';
 import { ConfigValues } from '../config/app.configuration';
+import { File } from 'src/domain/file/entity/file.entity';
+import { NotFoundExceptionMessage } from '../middleware/exceptions/exception.constants';
 
 @Injectable()
 export default class FileService {
@@ -40,24 +42,23 @@ export default class FileService {
 
   async uploadFile(request: UploadFileDto) {
     const s3Baseurl = this.getS3BaseUrl();
+    const bucket = this.getS3Bucket();
     try {
-      let res = await this.s3Service.createObject(
+      await this.s3Service.createObject(
         request.key,
         request.file,
-        request.bucket,
+        bucket,
         request.ACL,
         request.type,
       );
-      const url = `https://${request.bucket}.${s3Baseurl}/${request.key}`;
+      const url = `https://${bucket}.${s3Baseurl}/${request.key}`;
       return url;
     } catch (err) {
       throw new InternalServerErrorException('error with uploading file');
     }
   }
 
-  async getFileDetail(
-    url: string,
-  ): Promise<{ mimType: string; size: number; url: string } | null> {
+  async getFileDetail(url: string): Promise<File | null> {
     const s3Bucket = this.getS3Bucket();
     const s3Baseurl = this.getS3BaseUrl();
     const key = this.getKeyFromUrl(url);
@@ -65,16 +66,17 @@ export default class FileService {
       const response = await this.s3Service.getObject(key, s3Bucket);
       if (!!response) {
         const url = `https://${s3Bucket}.${s3Baseurl}/${key}`;
-        return {
-          url,
-          size: response.ContentLength!,
-          mimType: response.ContentType!,
-        };
+
+        let file = new File();
+        file.url = url;
+        file.size = response.ContentLength!;
+        file.mim_type = response.ContentType!;
+        return file;
       } else {
-        return null;
+        throw new NotFoundException(NotFoundExceptionMessage);
       }
     } catch (err) {
-      return null;
+      throw new NotFoundException(NotFoundExceptionMessage);
     }
   }
 
