@@ -25,7 +25,7 @@ import {
 import { CreateBrandReqDto } from './dto/create-brand.dto';
 import AdminAuth from '../auth/decorator/admin-auth.decorator';
 import { SuccessResponse } from 'src/infrastructure/middleware/interceptors/success.constant';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateBrandCommand } from './command/create-brand.command';
 import UploadFileResponse, {
   UploadFileDto,
@@ -36,6 +36,13 @@ import ParseObjectIdPipe from 'src/infrastructure/middleware/pipes/parse-object-
 import { DeleteBrandCommand } from './command/delete-brand.command';
 import { UpdateBrandReqDto } from './dto/update-brand.dto';
 import { UpdateBrandCommand } from './command/update-brand.command';
+import {
+  GetBrandListReqDto,
+  GetBrandListResDto,
+} from './dto/get-brand-list.dto';
+import { BrandListQuery } from './query/brand-list.query';
+import { GetBrandDetailResDto } from './dto/get-brand-detail.dto';
+import { BrandDetailQuery } from './query/brand-detail.query';
 // import FileService from 'src/modules/app/file/file.service';
 // import { BrandService } from './brand.service';
 // import { SuccessResponse } from 'src/constants/success.constant';
@@ -66,6 +73,7 @@ export class BrandController {
   constructor(
     private readonly fileService: FileService,
     private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
   ) {}
 
   @Post()
@@ -116,39 +124,45 @@ export class BrandController {
     return res;
   }
 
-  // @Post('list')
-  // // @ApiBearerAuth()
-  // // @Auth()
-  // @ApiOkResponse({
-  //   type: GetBrandListResDto,
-  //   description: '200. Success. Returns list of brands',
-  // })
-  // @HttpCode(HttpStatus.OK)
-  // async getBrandsList(
-  //   @Body() request: GetBrandListReqDto,
-  // ): Promise<GetBrandListResDto> {
-  //   return this.brandService.getBrandsList(request);
-  // }
+  @Post('list')
+  @ApiBearerAuth()
+  @AdminAuth()
+  @ApiOkResponse({
+    type: GetBrandListResDto,
+    description: '200. Success. Returns list of brands',
+  })
+  @HttpCode(HttpStatus.OK)
+  async getBrandsList(
+    @Body() request: GetBrandListReqDto,
+  ): Promise<GetBrandListResDto> {
+    return this.queryBus.execute(
+      new BrandListQuery(
+        request.pagination.page,
+        request.pagination.limit,
+        request.query,
+      ),
+    );
+  }
 
-  // @Get(':id')
-  // @ApiBearerAuth()
-  // @Auth()
-  // @ApiOkResponse({
-  //   type: GetBrandDetailResDto,
-  //   description: '200. Success. Returns a brand detail',
-  // })
-  // @HttpCode(HttpStatus.OK)
-  // @ApiParam({
-  //   name: 'id',
-  //   type: String,
-  //   required: true,
-  //   description: 'id of element',
-  // })
-  // async getBrandDetail(
-  //   @Param('id', new ParseObjectIdPipe()) id: Types.ObjectId,
-  // ): Promise<GetBrandDetailResDto> {
-  //   return this.brandService.getBrandDetail(id);
-  // }
+  @Get(':id')
+  @ApiBearerAuth()
+  @AdminAuth()
+  @ApiOkResponse({
+    type: GetBrandDetailResDto,
+    description: '200. Success. Returns a brand detail',
+  })
+  @HttpCode(HttpStatus.OK)
+  @ApiParam({
+    name: 'id',
+    type: String,
+    required: true,
+    description: 'id of element',
+  })
+  async getBrandDetail(
+    @Param('id', new ParseObjectIdPipe()) id: string,
+  ): Promise<GetBrandDetailResDto> {
+    return this.queryBus.execute(new BrandDetailQuery(id));
+  }
 
   @Patch()
   @ApiBearerAuth()

@@ -6,13 +6,15 @@ import FileDomainModule from 'src/domain/file/file.module';
 import { CreateBrandHandler } from './command/create-brand.command';
 import { DeleteBrandHandler } from './command/delete-brand.command';
 import { UpdateBrandHandler } from './command/update-brand.command';
+import { BrandListHandler } from './query/brand-list.query';
+import { BrandDetailHandler } from './query/brand-detail.query';
 
 export const commandHandlers = [
   CreateBrandHandler,
   DeleteBrandHandler,
   UpdateBrandHandler,
 ];
-export const queryHandlers = [];
+export const queryHandlers = [BrandListHandler, BrandDetailHandler];
 
 @Module({
   imports: [CqrsModule, BrandDomainModule, FileDomainModule],

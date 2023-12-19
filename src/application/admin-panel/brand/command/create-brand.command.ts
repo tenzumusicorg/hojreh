@@ -6,7 +6,6 @@ import { DualLanguageText } from 'src/domain/content/entity/dual-language.entity
 import { DescriptionItemDto } from 'src/domain/content/dto/description-item.dto';
 import { FAQItem } from 'src/domain/faq/entity/faq-item.entity';
 import FileService from 'src/infrastructure/file/file.service';
-import FileRepository from 'src/domain/file/file.repository';
 
 export class CreateBrandCommand {
   name: DualLanguageText;
@@ -30,7 +29,6 @@ export class CreateBrandHandler implements ICommandHandler<CreateBrandCommand> {
     @Inject(IBrandRepository)
     private readonly brandRepository: IBrandRepository,
     private fileService: FileService,
-    private fileRepository: FileRepository,
   ) {}
 
   async execute(command: CreateBrandCommand): Promise<void> {
