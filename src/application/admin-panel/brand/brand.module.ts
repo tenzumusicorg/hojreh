@@ -8,6 +8,7 @@ import { DeleteBrandHandler } from './command/delete-brand.command';
 import { UpdateBrandHandler } from './command/update-brand.command';
 import { BrandListHandler } from './query/brand-list.query';
 import { BrandDetailHandler } from './query/brand-detail.query';
+import { FaqDomainModule } from 'src/domain/faq/faq.module';
 
 export const commandHandlers = [
   CreateBrandHandler,
@@ -17,7 +18,7 @@ export const commandHandlers = [
 export const queryHandlers = [BrandListHandler, BrandDetailHandler];
 
 @Module({
-  imports: [CqrsModule, BrandDomainModule, FileDomainModule],
+  imports: [CqrsModule, BrandDomainModule, FileDomainModule, FaqDomainModule],
   controllers: [BrandController],
   providers: [...commandHandlers, ...queryHandlers],
   exports: [],

@@ -1,12 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
+import { IsMongoId, IsNotEmpty, ValidateNested } from 'class-validator';
 import { DualLanguageText } from 'src/domain/content/entity/dual-language.entity';
 
-export class FaqItemDto {
-  @ApiProperty({
-    type: String,
-    example: 'object id',
-  })
-  id: string;
+export default class AddBrandFaqDto {
+  @ApiProperty({ type: String, example: '6406f19211c2440bc2e12f1b' })
+  @IsMongoId()
+  @IsNotEmpty()
+  brand_id: string;
 
   @ApiProperty({
     type: DualLanguageText,
@@ -15,6 +16,9 @@ export class FaqItemDto {
       en: 'question 1',
     },
   })
+  @ValidateNested()
+  @Type(() => DualLanguageText)
+  @IsNotEmpty()
   question: DualLanguageText;
 
   @ApiProperty({
@@ -24,5 +28,8 @@ export class FaqItemDto {
       en: 'answer 1',
     },
   })
+  @ValidateNested()
+  @Type(() => DualLanguageText)
+  @IsNotEmpty()
   answer: DualLanguageText;
 }

@@ -43,6 +43,14 @@ import {
 import { BrandListQuery } from './query/brand-list.query';
 import { GetBrandDetailResDto } from './dto/get-brand-detail.dto';
 import { BrandDetailQuery } from './query/brand-detail.query';
+import AddBrandFaqDto from './dto/add-brand-faq.dto';
+import ChangeBrandFaqDto from './dto/brand-faq.dto';
+import { MoveDownBrandFaqCommand } from './command/moveup-brand.faq.command';
+import { MoveUpBrandFaqCommand } from './command/movedown-brand-faq.command';
+import UpdateBrandFaqDto from './dto/update-brand-faq.dto';
+import { UpdateBrandFaqCommand } from './command/update-brand-faq.command';
+import { DeleteBrandFaqCommand } from './command/delete-brand-faq.command';
+import { AddBrandFaqCommand } from './command/add-brand-faq.command';
 // import FileService from 'src/modules/app/file/file.service';
 // import { BrandService } from './brand.service';
 // import { SuccessResponse } from 'src/constants/success.constant';
@@ -198,83 +206,100 @@ export class BrandController {
     return new SuccessResponse();
   }
 
-  // @Post('faq-list/add')
-  // @ApiBearerAuth()
-  // @Auth()
-  // @ApiBody({ type: AddFaqItemReqDto })
-  // @ApiOkResponse({
-  //   type: SuccessResponse,
-  //   description: '201, Success',
-  // })
-  // @HttpCode(HttpStatus.OK)
-  // async addFAQItem(
-  //   @Body() request: AddFaqItemReqDto,
-  // ): Promise<SuccessResponse> {
-  //   await this.brandService.AddFaqItem(request);
-  //   return new SuccessResponse();
-  // }
+  @Post('faq-list/add')
+  @ApiBearerAuth()
+  @AdminAuth()
+  @ApiBody({ type: AddBrandFaqDto })
+  @ApiOkResponse({
+    type: SuccessResponse,
+    description: '201, Success',
+  })
+  @HttpCode(HttpStatus.OK)
+  async addFAQItem(@Body() request: AddBrandFaqDto): Promise<SuccessResponse> {
+    this.commandBus.execute(
+      new AddBrandFaqCommand(
+        request.brand_id,
+        request.answer,
+        request.question,
+      ),
+    );
+    return new SuccessResponse();
+  }
 
-  // @Delete('faq-list/delete')
-  // @ApiBearerAuth()
-  // @Auth()
-  // @ApiBody({ type: DeleteFaqItemReqDto })
-  // @ApiOkResponse({
-  //   type: SuccessResponse,
-  //   description: '200, Success',
-  // })
-  // @HttpCode(HttpStatus.OK)
-  // async deleteFaqItem(
-  //   @Body() request: DeleteFaqItemReqDto,
-  // ): Promise<SuccessResponse> {
-  //   await this.brandService.deleteFaqItem(request);
-  //   return new SuccessResponse();
-  // }
+  @Delete('faq-list/delete')
+  @ApiBearerAuth()
+  @AdminAuth()
+  @ApiBody({ type: ChangeBrandFaqDto })
+  @ApiOkResponse({
+    type: SuccessResponse,
+    description: '200, Success',
+  })
+  @HttpCode(HttpStatus.OK)
+  async deleteFaqItem(
+    @Body() request: ChangeBrandFaqDto,
+  ): Promise<SuccessResponse> {
+    this.commandBus.execute(
+      new DeleteBrandFaqCommand(request.brand_id, request.id),
+    );
+    return new SuccessResponse();
+  }
 
-  // @Patch('faq-list/update')
-  // @ApiBearerAuth()
-  // @Auth()
-  // @ApiBody({ type: UpdateFaqItemReqDto })
-  // @ApiOkResponse({
-  //   type: SuccessResponse,
-  //   description: '200, Success',
-  // })
-  // @HttpCode(HttpStatus.OK)
-  // async updateFaqItem(
-  //   @Body() request: UpdateFaqItemReqDto,
-  // ): Promise<SuccessResponse> {
-  //   await this.brandService.UpdateFaqItem(request);
-  //   return new SuccessResponse();
-  // }
+  @Patch('faq-list/update')
+  @ApiBearerAuth()
+  @AdminAuth()
+  @ApiBody({ type: UpdateBrandFaqDto })
+  @ApiOkResponse({
+    type: SuccessResponse,
+    description: '200, Success',
+  })
+  @HttpCode(HttpStatus.OK)
+  async updateFaqItem(
+    @Body() request: UpdateBrandFaqDto,
+  ): Promise<SuccessResponse> {
+    this.commandBus.execute(
+      new UpdateBrandFaqCommand(
+        request.brand_id,
+        request.id,
+        request.answer,
+        request.question,
+      ),
+    );
+    return new SuccessResponse();
+  }
 
-  // @Post('faq-list/move-up')
-  // @ApiBearerAuth()
-  // @Auth()
-  // @ApiBody({ type: MoveFaqItemOrderUpReqDto })
-  // @ApiOkResponse({
-  //   type: SuccessResponse,
-  //   description: '200, Success',
-  // })
-  // @HttpCode(HttpStatus.OK)
-  // async moveUpFaqItem(
-  //   @Body() request: MoveFaqItemOrderUpReqDto,
-  // ): Promise<SuccessResponse> {
-  //   await this.brandService.moveUpFaqItem(request);
-  //   return new SuccessResponse();
-  // }
+  @Post('faq-list/move-up')
+  @ApiBearerAuth()
+  @AdminAuth()
+  @ApiBody({ type: ChangeBrandFaqDto })
+  @ApiOkResponse({
+    type: SuccessResponse,
+    description: '200, Success',
+  })
+  @HttpCode(HttpStatus.OK)
+  async moveUpFaqItem(
+    @Body() request: ChangeBrandFaqDto,
+  ): Promise<SuccessResponse> {
+    this.commandBus.execute(
+      new MoveUpBrandFaqCommand(request.brand_id, request.id),
+    );
+    return new SuccessResponse();
+  }
 
-  // @Post('faq-list/move-down')
-  // @ApiBearerAuth()
-  // @Auth()
-  // @ApiBody({ type: MoveFaqItemOrderDownReqDto })
-  // @ApiOkResponse({
-  //   type: SuccessResponse,
-  //   description: '200, Success',
-  // })
-  // @HttpCode(HttpStatus.OK)
-  // async moveDownFaqItem(
-  //   @Body() request: MoveFaqItemOrderDownReqDto,
-  // ): Promise<SuccessResponse> {
-  //   await this.brandService.moveDownFaqItem(request);
-  //   return new SuccessResponse();
-  // }
+  @Post('faq-list/move-down')
+  @ApiBearerAuth()
+  @AdminAuth()
+  @ApiBody({ type: ChangeBrandFaqDto })
+  @ApiOkResponse({
+    type: SuccessResponse,
+    description: '200, Success',
+  })
+  @HttpCode(HttpStatus.OK)
+  async moveDownFaqItem(
+    @Body() request: ChangeBrandFaqDto,
+  ): Promise<SuccessResponse> {
+    this.commandBus.execute(
+      new MoveDownBrandFaqCommand(request.brand_id, request.id),
+    );
+    return new SuccessResponse();
+  }
 }

@@ -1,7 +1,6 @@
 import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { PaginateOptions } from 'mongoose';
-import { AdminStatusEnum } from 'src/domain/admin/constant/admin-status.enum';
 import { IBrandRepository } from 'src/domain/brand/interface/IBrand.repository';
 import { BrandItemDto, GetBrandListResDto } from '../dto/get-brand-list.dto';
 

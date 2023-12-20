@@ -11,7 +11,7 @@ export class FAQItemModel {
   answer: DualLanguageText;
 }
 
-export type FAQItemDocument = HydratedDocument<FAQItemModel>;
+// export type FAQItemDocument = HydratedDocument<FAQItemModel>;
 export const FAQItemSchema = SchemaFactory.createForClass(FAQItemModel);
 
 FAQItemSchema.virtual('id').get(function () {
