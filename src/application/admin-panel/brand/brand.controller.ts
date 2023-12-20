@@ -9,7 +9,6 @@ import {
   Param,
   Patch,
   Post,
-  Request,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -36,12 +35,9 @@ import ParseObjectIdPipe from 'src/infrastructure/middleware/pipes/parse-object-
 import { DeleteBrandCommand } from './command/delete-brand.command';
 import { UpdateBrandReqDto } from './dto/update-brand.dto';
 import { UpdateBrandCommand } from './command/update-brand.command';
-import {
-  GetBrandListReqDto,
-  GetBrandListResDto,
-} from './dto/get-brand-list.dto';
+import { GetBrandListDto, BrandListDto } from './dto/brand-list.dto';
 import { BrandListQuery } from './query/brand-list.query';
-import { GetBrandDetailResDto } from './dto/get-brand-detail.dto';
+import { BrandDto } from './dto/brand.dto';
 import { BrandDetailQuery } from './query/brand-detail.query';
 import AddBrandFaqDto from './dto/add-brand-faq.dto';
 import ChangeBrandFaqDto from './dto/brand-faq.dto';
@@ -51,29 +47,6 @@ import UpdateBrandFaqDto from './dto/update-brand-faq.dto';
 import { UpdateBrandFaqCommand } from './command/update-brand-faq.command';
 import { DeleteBrandFaqCommand } from './command/delete-brand-faq.command';
 import { AddBrandFaqCommand } from './command/add-brand-faq.command';
-// import FileService from 'src/modules/app/file/file.service';
-// import { BrandService } from './brand.service';
-// import { SuccessResponse } from 'src/constants/success.constant';
-// import { CreateBrandReqDto } from './dto/create-brand.dto';
-// import { UploadFileResponse } from 'src/constants/upload-file-response';
-// import { FileInterceptor } from '@nestjs/platform-express';
-// import { WEBSITE_BUCKET } from 'src/modules/app/file/constants/app-bucket.constant';
-// import { FileTypeEnum } from 'src/modules/app/file/constants/file-type.enum';
-// import { BadRequestExceptionMessage } from 'src/constants/exception.constants';
-// import {
-//   GetBrandListReqDto,
-//   GetBrandListResDto,
-// } from './dto/get-brand-list.dto';
-// import { GetBrandDetailResDto } from './dto/get-brand-detail.dto';
-// import ParseObjectIdPipe from '@pipes/parse-object-id.pipe';
-// import { Types } from 'mongoose';
-// import { UpdateBrandReqDto } from './dto/update-brand.dto';
-// import AddFaqItemReqDto from './dto/add-faq.dto';
-// import DeleteFaqItemReqDto from './dto/delete-faq.dto';
-// import UpdateFaqItemReqDto from './dto/update-faq.dto';
-// import MoveFaqItemOrderUpReqDto from './dto/change-faq-order-up.dto';
-// import MoveFaqItemOrderDownReqDto from './dto/change-faq-order-down.dto';
-// import Auth from '@decorators/admin-auth.decorator';
 
 @ApiTags('Admin/Brand')
 @Controller()
@@ -136,13 +109,11 @@ export class BrandController {
   @ApiBearerAuth()
   @AdminAuth()
   @ApiOkResponse({
-    type: GetBrandListResDto,
+    type: BrandListDto,
     description: '200. Success. Returns list of brands',
   })
   @HttpCode(HttpStatus.OK)
-  async getBrandsList(
-    @Body() request: GetBrandListReqDto,
-  ): Promise<GetBrandListResDto> {
+  async getBrandsList(@Body() request: GetBrandListDto): Promise<BrandListDto> {
     return this.queryBus.execute(
       new BrandListQuery(
         request.pagination.page,
@@ -156,7 +127,7 @@ export class BrandController {
   @ApiBearerAuth()
   @AdminAuth()
   @ApiOkResponse({
-    type: GetBrandDetailResDto,
+    type: BrandDto,
     description: '200. Success. Returns a brand detail',
   })
   @HttpCode(HttpStatus.OK)
@@ -168,7 +139,7 @@ export class BrandController {
   })
   async getBrandDetail(
     @Param('id', new ParseObjectIdPipe()) id: string,
-  ): Promise<GetBrandDetailResDto> {
+  ): Promise<BrandDto> {
     return this.queryBus.execute(new BrandDetailQuery(id));
   }
 

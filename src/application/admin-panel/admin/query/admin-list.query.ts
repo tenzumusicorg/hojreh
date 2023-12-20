@@ -2,7 +2,7 @@ import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { PaginateOptions } from 'mongoose';
 import { IAdminRepository } from 'src/domain/admin/interface/IAdmin.repository';
-import { AdminItemDto, AdminListResDto } from '../dto/admin-list.dto';
+import { AdminItemDto, AdminListDto } from '../dto/admin-list.dto';
 import { AdminStatusEnum } from 'src/domain/admin/constant/admin-status.enum';
 
 export class AdminListQuery {
@@ -53,7 +53,7 @@ export class AdminListHandler implements IQueryHandler<AdminListQuery> {
       .model()
       .paginate(adminQuery, options);
 
-    let res = new AdminListResDto();
+    let res = new AdminListDto();
     res.page = foundAdminList.page || query.page;
     res.total_pages = foundAdminList.totalPages;
     res.items = foundAdminList.docs.map((element) => {

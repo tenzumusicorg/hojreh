@@ -16,7 +16,7 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
-import { AdminListReqDto, AdminListResDto } from './dto/admin-list.dto';
+import { GetAdminListDto, AdminListDto } from './dto/admin-list.dto';
 import { UpdateAdminReqDto, UpdateAdminResDto } from './dto/update-admin.dto';
 import { DeleteAdminResDto } from './dto/delete-admin.dto';
 import ParseObjectIdPipe from 'src/infrastructure/middleware/pipes/parse-object-id.pipe';
@@ -24,7 +24,7 @@ import AdminAuth from '../auth/decorator/admin-auth.decorator';
 import { AdminDto } from './dto/admin.dto';
 import WrapResponseInterceptor from 'src/infrastructure/middleware/interceptors/wrap-response.interceptor';
 import { DecodedUser } from 'src/domain/auth/interface/decoded-user.interface';
-import { CurrentUser } from 'src/infrastructure/middleware/current-user.decorator';
+import { CurrentUser } from 'src/infrastructure/middleware/decorators/current-user.decorator';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { AdminProfileQuery } from './query/admin-profile.query';
 import { AdminListQuery } from './query/admin-list.query';
@@ -64,14 +64,12 @@ export default class AdminsController {
   }
 
   @ApiOkResponse({
-    type: AdminListResDto,
+    type: AdminListDto,
     description: '200. Success. Returns a list of admins',
   })
   @Post('list')
   @HttpCode(HttpStatus.OK)
-  async getAdminList(
-    @Body() request: AdminListReqDto,
-  ): Promise<AdminListResDto> {
+  async getAdminList(@Body() request: GetAdminListDto): Promise<AdminListDto> {
     return this.queryBus.execute(
       new AdminListQuery(
         request.page,

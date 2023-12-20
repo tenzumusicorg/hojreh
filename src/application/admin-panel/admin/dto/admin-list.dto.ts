@@ -4,7 +4,7 @@ import { Types } from 'mongoose';
 import { AdminStatusEnum } from '../../../../domain/admin/constant/admin-status.enum';
 import { RolesEnum } from '../../../../domain/auth/constant/role.enum';
 
-export class AdminListReqDto {
+export class GetAdminListDto {
   @ApiProperty({
     type: Number,
     example: 1,
@@ -59,7 +59,7 @@ export class AdminItemDto {
   status: AdminStatusEnum;
 }
 
-export class AdminListResDto {
+export class AdminListDto {
   @ApiProperty({
     type: AdminItemDto,
     isArray: true,

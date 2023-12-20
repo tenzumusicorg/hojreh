@@ -26,7 +26,7 @@ export default class BrandRepository implements IBrandRepository {
   }
 
   async find() {
-    return await this.brandModel.find().populate('logo');
+    return await this.brandModel.find();
   }
   async updateOne(id: string, brandDto: Partial<Brand>) {
     await this.brandModel.updateOne(

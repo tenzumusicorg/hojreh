@@ -4,7 +4,7 @@ import { DescriptionItemDto } from 'src/domain/content/dto/description-item.dto'
 import { DualLanguageText } from 'src/domain/content/entity/dual-language.entity';
 import { FaqItemDto } from '../../../../domain/faq/dto/faq-dto';
 
-export class GetBrandDetailResDto {
+export class BrandDto {
   @ApiProperty({ type: String, example: '6406f19211c2440bc2e12f1b' })
   id: string;
 

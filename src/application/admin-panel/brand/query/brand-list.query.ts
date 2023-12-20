@@ -2,7 +2,7 @@ import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { PaginateOptions } from 'mongoose';
 import { IBrandRepository } from 'src/domain/brand/interface/IBrand.repository';
-import { BrandItemDto, GetBrandListResDto } from '../dto/get-brand-list.dto';
+import { BrandItemDto, BrandListDto } from '../dto/brand-list.dto';
 
 export class BrandListQuery {
   constructor(
@@ -41,7 +41,7 @@ export class BrandListHandler implements IQueryHandler<BrandListQuery> {
     let foundBrands = await this.brandRepository
       .model()
       .paginate(brandQuery, options);
-    let res = new GetBrandListResDto();
+    let res = new BrandListDto();
     res.items = new Array<BrandItemDto>();
 
     for await (const brand of foundBrands.docs) {

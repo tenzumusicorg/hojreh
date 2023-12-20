@@ -9,7 +9,7 @@ import {
 import { DualLanguageText } from 'src/domain/content/entity/dual-language.entity';
 import { PaginationParams } from 'src/domain/database/pagination-params.interface';
 
-export class GetBrandListReqDto {
+export class GetBrandListDto {
   @ApiProperty({
     type: PaginationParams,
     required: true,
@@ -45,7 +45,7 @@ export class BrandItemDto {
   logo: string;
 }
 
-export class GetBrandListResDto {
+export class BrandListDto {
   @ApiProperty({ type: [BrandItemDto] })
   items: Array<BrandItemDto>;
 }
