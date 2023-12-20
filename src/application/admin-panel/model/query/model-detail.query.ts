@@ -1,7 +1,6 @@
-import { Inject, NotFoundException } from '@nestjs/common';
+import { NotFoundException } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { NotFoundExceptionMessage } from 'src/infrastructure/middleware/exceptions/exception.constants';
-import { IModelRepository } from 'src/domain/Model/interface/IModel.repository';
 import { ModelDto } from '../dto/model-detail.dto';
 import { Brand } from 'src/domain/brand/entity/brand.entity';
 import ModelRepository from 'src/domain/model/repository/model.repository';

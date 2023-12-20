@@ -1,7 +1,5 @@
-import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { PaginateOptions } from 'mongoose';
-import { IModelRepository } from 'src/domain/Model/interface/IModel.repository';
 import { ModelItemDto, ModelListDto } from '../dto/model-list.dto';
 import ModelRepository from 'src/domain/model/repository/model.repository';
 
