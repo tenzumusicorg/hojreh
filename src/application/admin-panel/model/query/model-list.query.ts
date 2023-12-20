@@ -3,6 +3,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { PaginateOptions } from 'mongoose';
 import { IModelRepository } from 'src/domain/Model/interface/IModel.repository';
 import { ModelItemDto, ModelListDto } from '../dto/model-list.dto';
+import ModelRepository from 'src/domain/model/repository/model.repository';
 
 export class ModelListQuery {
   constructor(
@@ -13,10 +14,7 @@ export class ModelListQuery {
 
 @QueryHandler(ModelListQuery)
 export class ModelListHandler implements IQueryHandler<ModelListQuery> {
-  constructor(
-    @Inject(IModelRepository)
-    private readonly modelRepository: IModelRepository,
-  ) {}
+  constructor(private readonly modelRepository: ModelRepository) {}
 
   async execute(query: ModelListQuery) {
     const options: PaginateOptions = {

@@ -15,11 +15,12 @@ import ModelRepository from './repository/model.repository';
   ],
   controllers: [],
   providers: [
+    ModelRepository,
     {
       provide: IModelRepository,
       useClass: ModelRepository,
     },
   ],
-  exports: [],
+  exports: [IModelRepository, ModelRepository],
 })
 export default class ModelDomainModule {}

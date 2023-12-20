@@ -5,6 +5,7 @@ import { UpdateModelHandler } from './command/update-model.command';
 import { ModelListHandler } from './query/model-list.query';
 import { ModelDetailHandler } from './query/model-detail.query';
 import { DeleteModelHandler } from './command/delete-model.command';
+import { CqrsModule } from '@nestjs/cqrs';
 
 export const commandHandlers = [
   CreateModelHandler,
@@ -14,7 +15,7 @@ export const commandHandlers = [
 export const queryHandlers = [ModelListHandler, ModelDetailHandler];
 
 @Module({
-  imports: [ModelDomainModule],
+  imports: [CqrsModule, ModelDomainModule],
   controllers: [],
   providers: [...commandHandlers, ...queryHandlers],
   exports: [],

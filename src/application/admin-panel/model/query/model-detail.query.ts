@@ -4,6 +4,7 @@ import { NotFoundExceptionMessage } from 'src/infrastructure/middleware/exceptio
 import { IModelRepository } from 'src/domain/Model/interface/IModel.repository';
 import { ModelDto } from '../dto/model-detail.dto';
 import { Brand } from 'src/domain/brand/entity/brand.entity';
+import ModelRepository from 'src/domain/model/repository/model.repository';
 
 export class ModelDetailQuery {
   constructor(public readonly id: string) {}
@@ -11,10 +12,7 @@ export class ModelDetailQuery {
 
 @QueryHandler(ModelDetailQuery)
 export class ModelDetailHandler implements IQueryHandler<ModelDetailQuery> {
-  constructor(
-    @Inject(IModelRepository)
-    private readonly modelRepository: IModelRepository,
-  ) {}
+  constructor(private readonly modelRepository: ModelRepository) {}
 
   async execute(query: ModelDetailQuery): Promise<ModelDto> {
     let foundModel = await this.modelRepository
