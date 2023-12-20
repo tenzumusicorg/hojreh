@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { DualLanguageText } from 'src/domain/content/entity/dual-language.entity';
+import { DualLanguageTextDto } from 'src/domain/content/dto/dual-language.dto';
 
 export class BrandDto {
   @ApiProperty({ type: String, example: '6406f19211c2440bc2e12f1b' })
@@ -15,13 +15,13 @@ export class BrandDto {
   logo_id: string;
 
   @ApiProperty({
-    type: DualLanguageText,
+    type: DualLanguageTextDto,
     example: {
       en: 'yohama',
       fa: 'یوهاما',
     },
   })
-  name: DualLanguageText;
+  name: DualLanguageTextDto;
 }
 
 export class ModelDto {

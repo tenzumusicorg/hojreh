@@ -1,21 +1,22 @@
 import { Types, Model as MongooseModel, PaginateModel } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
-import { ICategoryRepository } from '../interface/ICategory.repository';
-import { Category } from '../entity/category.entity';
+import { ISubCategoryRepository } from '../interface/ISubCategory.repository';
+import { SubCategory } from '../entity/subcategory.entity';
 
 @Injectable()
-export default class CategoryRepository implements ICategoryRepository {
+export default class SubCategoryRepository implements ISubCategoryRepository {
   constructor(
-    @InjectModel('Category') private categoryModel: MongooseModel<Category>,
-    @InjectModel('Category')
-    private pgModel: PaginateModel<Category>,
+    @InjectModel('SubCategory')
+    private categoryModel: MongooseModel<SubCategory>,
+    @InjectModel('SubCategory')
+    private pgModel: PaginateModel<SubCategory>,
   ) {}
 
-  async createOne(category: Category) {
+  async createOne(subcategory: SubCategory) {
     return await this.categoryModel.create({
       _id: new Types.ObjectId(),
-      ...category,
+      ...subcategory,
     });
   }
 
@@ -28,7 +29,7 @@ export default class CategoryRepository implements ICategoryRepository {
   async find() {
     return await this.categoryModel.find();
   }
-  async updateOne(id: string, entity: Partial<Category>) {
+  async updateOne(id: string, entity: Partial<SubCategory>) {
     await this.categoryModel.updateOne(
       {
         _id: id,

@@ -1,21 +1,21 @@
 import { Types, Model as MongooseModel, PaginateModel } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
-import { ICategoryRepository } from '../interface/ICategory.repository';
-import { Category } from '../entity/category.entity';
+import { ITagRepository } from '../interface/ITag.repository';
+import { Tag } from '@aws-sdk/client-s3';
 
 @Injectable()
-export default class CategoryRepository implements ICategoryRepository {
+export default class TagRepository implements ITagRepository {
   constructor(
-    @InjectModel('Category') private categoryModel: MongooseModel<Category>,
-    @InjectModel('Category')
-    private pgModel: PaginateModel<Category>,
+    @InjectModel('Tag') private categoryModel: MongooseModel<Tag>,
+    @InjectModel('Tag')
+    private pgModel: PaginateModel<Tag>,
   ) {}
 
-  async createOne(category: Category) {
+  async createOne(tag: Tag) {
     return await this.categoryModel.create({
       _id: new Types.ObjectId(),
-      ...category,
+      ...tag,
     });
   }
 
@@ -28,7 +28,7 @@ export default class CategoryRepository implements ICategoryRepository {
   async find() {
     return await this.categoryModel.find();
   }
-  async updateOne(id: string, entity: Partial<Category>) {
+  async updateOne(id: string, entity: Partial<Tag>) {
     await this.categoryModel.updateOne(
       {
         _id: id,

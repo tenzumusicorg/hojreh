@@ -6,6 +6,7 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
+import { DualLanguageTextDto } from 'src/domain/content/dto/dual-language.dto';
 import { DualLanguageText } from 'src/domain/content/entity/dual-language.entity';
 import { PaginationParams } from 'src/domain/database/pagination-params.interface';
 
@@ -33,13 +34,13 @@ export class BrandItemDto {
   id: string;
 
   @ApiProperty({
-    type: DualLanguageText,
+    type: DualLanguageTextDto,
     example: {
       en: 'yohama',
       fa: 'یوهاما',
     },
   })
-  name: DualLanguageText;
+  name: DualLanguageTextDto;
 
   @ApiProperty({ type: String, example: 'https://tenzushop/categort/guitar' })
   logo: string;

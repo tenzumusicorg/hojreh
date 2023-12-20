@@ -28,14 +28,14 @@ export default class ModelRepository implements IModelRepository {
   async find() {
     return await this.productModelModel.find();
   }
-  async updateOne(id: string, brandDto: Partial<Model>) {
+  async updateOne(id: string, entity: Partial<Model>) {
     await this.productModelModel.updateOne(
       {
         _id: id,
       },
       {
         $set: {
-          ...brandDto,
+          ...entity,
         },
       },
     );
