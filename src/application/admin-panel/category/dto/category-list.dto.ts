@@ -24,7 +24,7 @@ export class CategoryItemDto {
   product_count: number;
 }
 
-export class GetCategoryListResDto {
+export class CategoryListDto {
   @ApiProperty({ type: [CategoryItemDto] })
   items: Array<CategoryItemDto>;
 }

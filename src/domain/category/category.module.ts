@@ -19,7 +19,8 @@ import CategoryRepository from './repository/category.repository';
       provide: ICategoryRepository,
       useClass: CategoryRepository,
     },
+    CategoryRepository,
   ],
-  exports: [ICategoryRepository],
+  exports: [ICategoryRepository, CategoryRepository],
 })
 export default class CategoryDomainModule {}
