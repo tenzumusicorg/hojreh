@@ -1,4 +1,4 @@
-import { Module, OnModuleInit } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import FileDomainModule from 'src/domain/file/file.module';
 import { FaqDomainModule } from 'src/domain/faq/faq.module';
@@ -38,7 +38,4 @@ export const queryHandlers = [CategoryDetailQuery, CategoryListQuery];
   providers: [...commandHandlers, ...queryHandlers],
   exports: [],
 })
-export default class CategoryModule implements OnModuleInit {
-  constructor() {}
-  async onModuleInit() {}
-}
+export default class CategoryModule {}

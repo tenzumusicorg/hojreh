@@ -20,6 +20,6 @@ import { SubCategorySchema } from './schema/subcategory.schema';
       useClass: SubCategoryRepository,
     },
   ],
-  exports: [SubCategoryRepository],
+  exports: [ISubCategoryRepository],
 })
 export default class SubCategoryDomainModule {}

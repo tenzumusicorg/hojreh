@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@nestjs/core';
 import BrandModule from './brand/brand.module';
 import ModelModule from './model/model.module';
 import CategoryModule from './category/category.module';
+import SubCategoryModule from './subcategory/subcategory.module';
 
 const routes: Routes = [
   {
@@ -15,6 +16,7 @@ const routes: Routes = [
       { path: '/brand', module: BrandModule },
       { path: '/model', module: ModelModule },
       { path: '/category', module: CategoryModule },
+      { path: '/subcategory', module: SubCategoryModule },
     ],
   },
 ];
@@ -27,6 +29,7 @@ const routes: Routes = [
     BrandModule,
     ModelModule,
     CategoryModule,
+    SubCategoryModule,
   ],
   controllers: [],
   providers: [],

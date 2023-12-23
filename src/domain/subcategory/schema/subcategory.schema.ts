@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
-import paginate from 'mongoose-paginate-v2';
+import * as paginate from 'mongoose-paginate-v2';
 import { CategoryModel } from 'src/domain/category/schema/category.schema';
 import {
   DescriptionItemModel,

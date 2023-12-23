@@ -41,7 +41,7 @@ export class CreateCategoryHandler
     category.descriptions = command.descriptions;
     category.seo_description = command.seo_description;
     category.seo_title = command.seo_description;
-    category.faq_title = category.faq_title;
+    category.faq_title = command.faq_title;
     category.faq_list = new Array<FAQItem>();
     category.thumbnail = foundThumbnail;
     category.banner = foundBanner;

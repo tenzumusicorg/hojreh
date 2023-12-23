@@ -1,10 +1,8 @@
 import { Inject, NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { Category } from 'src/domain/category/entity/category.entity';
 import { ICategoryRepository } from 'src/domain/category/interface/ICategory.repository';
 import { DescriptionItem } from 'src/domain/content/entity/description-item.entity';
 import { DualLanguageText } from 'src/domain/content/entity/dual-language.entity';
-import { FAQItem } from 'src/domain/faq/entity/faq-item.entity';
 import FileService from 'src/infrastructure/file/file.service';
 import { NotFoundExceptionMessage } from 'src/infrastructure/middleware/exceptions/exception.constants';
 
@@ -34,9 +32,7 @@ export class UpdateCategoryHandler
 
   async execute(command: UpdateCategoryCommand): Promise<void> {
     let foundCategory = await this.categoryRepository.findOne(command.id);
-    if (!foundCategory) {
-      throw new NotFoundException(NotFoundExceptionMessage);
-    }
+    if (!foundCategory) throw new NotFoundException(NotFoundExceptionMessage);
 
     if (!!command.title_en) foundCategory.title.en = command.title_en;
 

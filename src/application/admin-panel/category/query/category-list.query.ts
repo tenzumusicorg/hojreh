@@ -4,8 +4,7 @@ import { ICategoryRepository } from 'src/domain/category/interface/ICategory.rep
 import { CategoryItemDto, CategoryListDto } from '../dto/category-list.dto';
 
 export class CategoryListQuery {
-  constructor() // public page: number,
-  // public limit: number,
+  constructor() // public limit: number, // public page: number,
   // public query: string,
   {}
 }
@@ -31,7 +30,7 @@ export class CategoryListHandler implements IQueryHandler<CategoryListQuery> {
         $project: {
           _id: 1,
           title: 1,
-          thumbnail: { $arrayElemAt: ['$thumbnail', 0] },
+          thumbnail: 1,
           productCount: { $size: '$products' },
         },
       },
