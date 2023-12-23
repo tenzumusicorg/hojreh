@@ -1,33 +1,32 @@
-import { Inject, NotFoundException } from '@nestjs/common';
+import { NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { ICategoryRepository } from 'src/domain/category/interface/ICategory.repository';
 import { NotFoundExceptionMessage } from 'src/infrastructure/middleware/exceptions/exception.constants';
 import FaqRepository from 'src/domain/faq/faq.repository';
+import CategoryRepository from 'src/domain/category/repository/category.repository';
 
-export class MoveUpCategoryFaqCommand {
+export class MoveDownCategoryFaqCommand {
   constructor(
     public category_id: string,
     public id: string,
   ) {}
 }
 
-@CommandHandler(MoveUpCategoryFaqCommand)
-export class MoveUpCategoryFaqHandler
-  implements ICommandHandler<MoveUpCategoryFaqCommand>
+@CommandHandler(MoveDownCategoryFaqCommand)
+export class MoveDownCategoryFaqHandler
+  implements ICommandHandler<MoveDownCategoryFaqCommand>
 {
   constructor(
-    @Inject(ICategoryRepository)
-    private readonly categoryRepository: ICategoryRepository,
+    private readonly categoryRepository: CategoryRepository,
     private readonly faqRepository: FaqRepository,
   ) {}
 
-  async execute(command: MoveUpCategoryFaqCommand): Promise<void> {
+  async execute(command: MoveDownCategoryFaqCommand): Promise<void> {
     let foundCategory = await this.categoryRepository.findOne(
       command.category_id,
     );
     if (!foundCategory) throw new NotFoundException(NotFoundExceptionMessage);
 
-    foundCategory.faq_list = this.faqRepository.moveUpFaq(
+    foundCategory.faq_list = this.faqRepository.moveDownFaq(
       command.id,
       foundCategory.faq_list,
     );

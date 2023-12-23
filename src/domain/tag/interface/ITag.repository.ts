@@ -1,6 +1,6 @@
 import { IGenericRepository } from 'src/domain/database/generic-repository';
 import { PaginateModel } from 'mongoose';
-import { Tag } from '@aws-sdk/client-s3';
+import { Tag } from '../entity/tag.entity';
 
 export interface ITagRepository extends IGenericRepository<Tag> {
   findOne(id: string): Promise<Tag>;

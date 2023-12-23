@@ -2,7 +2,7 @@ import { Types, Model as MongooseModel, PaginateModel } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
 import { ITagRepository } from '../interface/ITag.repository';
-import { Tag } from '@aws-sdk/client-s3';
+import { Tag } from '../entity/tag.entity';
 
 @Injectable()
 export default class TagRepository implements ITagRepository {

@@ -3,7 +3,7 @@ import { DualLanguageText } from 'src/domain/content/entity/dual-language.entity
 import { FAQItem } from 'src/domain/faq/entity/faq-item.entity';
 import { File } from 'src/domain/file/entity/file.entity';
 
-export class SubCategory {
+export class Tag {
   id: string;
   subcategory: string;
   title: DualLanguageText;

@@ -45,8 +45,8 @@ import UpdateCategoryFaqDto from './dto/update-category-faq.dto';
 import { UpdateCategoryFaqCommand } from './command/update-category-faq.command';
 import ChangeCategoryFaqDto from './dto/category-faq.dto';
 import WrapResponseInterceptor from 'src/infrastructure/middleware/interceptors/wrap-response.interceptor';
-import { MoveUpCategoryFaqCommand } from './command/movedown-category-faq.command';
-import { MoveDownCategoryFaqCommand } from './command/moveup-category.faq.command';
+import { MoveUpCategoryFaqCommand } from './command/moveup-category-faq.command';
+import { MoveDownCategoryFaqCommand } from './command/movedown-category-faq.command';
 
 @ApiTags('Admin/Category')
 @Controller()

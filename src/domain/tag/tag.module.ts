@@ -19,7 +19,8 @@ import TagRepository from './repository/tag.repository';
       provide: ITagRepository,
       useClass: TagRepository,
     },
+    TagRepository,
   ],
-  exports: [ITagRepository],
+  exports: [ITagRepository, TagRepository],
 })
 export default class TagDomainModule {}

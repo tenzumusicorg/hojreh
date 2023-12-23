@@ -7,7 +7,7 @@ import { ISubCategoryRepository } from 'src/domain/subcategory/interface/ISubCat
 
 export class AddSubCategoryFaqCommand {
   constructor(
-    public category_id: string,
+    public sub_category_id: string,
     public answer: DualLanguageText,
     public question: DualLanguageText,
   ) {}
@@ -25,7 +25,7 @@ export class AddSubCategoryFaqHandler
 
   async execute(command: AddSubCategoryFaqCommand): Promise<void> {
     let foundSubCategory = await this.subCategoryRepository.findOne(
-      command.category_id,
+      command.sub_category_id,
     );
     if (!foundSubCategory)
       throw new NotFoundException(NotFoundExceptionMessage);

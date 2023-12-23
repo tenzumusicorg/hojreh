@@ -25,31 +25,31 @@ import {
 import FileService from 'src/infrastructure/file/file.service';
 import AdminAuth from '../auth/decorator/admin-auth.decorator';
 import { SuccessResponse } from 'src/infrastructure/middleware/interceptors/success.constant';
-import { CreateSubCategoryDto } from './dto/create-subcategory.dto';
-import { CreateSubCategoryCommand } from './command/create-subcategory.command';
+
 import UploadFileResponse, {
   UploadFileDto,
 } from 'src/infrastructure/file/dto/upload-file.dto';
-import { SubCategoryListDto } from './dto/subcategory-list.dto';
-import { SubCategoryListQuery } from './query/subcategory-list.query';
-import { SubCategoryDto } from './dto/subcategory.dto';
 import ParseObjectIdPipe from 'src/infrastructure/middleware/pipes/parse-object-id.pipe';
-import { SubCategoryDetailQuery } from './query/subcategory-detail.query';
-import { UpdateSubCategoryDto } from './dto/update-subcategory.dto';
-import { UpdateSubCategoryCommand } from './command/update-subcategory.command';
-import { DeleteSubCategoryCommand } from './command/delete-subcategory.command';
-import AddSubCategoryFaqDto from './dto/add-subcategory-faq.dto';
-import { DeleteSubCategoryFaqCommand } from './command/delete-subcategory-faq.command';
-import UpdateSubCategoryFaqDto from './dto/update-subcategory-faq.dto';
-import { UpdateSubCategoryFaqCommand } from './command/update-subcategory-faq.command';
-import ChangeSubCategoryFaqDto from './dto/subcategory-faq.dto';
-import { MoveUpSubCategoryFaqCommand } from './command/moveup-subcategory-faq.command';
-import { MoveDownSubCategoryFaqCommand } from './command/movedown-subcategory-faq.command';
-import { AddSubCategoryFaqCommand } from './command/add-subcategory-faq.command';
+import { CreateTagDto } from './dto/create-tag.dto';
+import { CreateTagCommand } from './command/create-tag.command';
+import { TagListDto } from './dto/tag-list.dto';
+import { TagListQuery } from './query/tag-list.query';
+import { TagDto } from './dto/tag.dto';
+import { TagDetailQuery } from './query/tag-detail.query';
+import { UpdateTagDto } from './dto/update-tag.dto';
+import { UpdateTagCommand } from './command/update-tag.command';
+import { DeleteTagCommand } from './command/delete-tag.command';
+import { AddCategoryFaqCommand } from '../category/command/add-category-faq.command';
+import { DeleteTagFaqCommand } from './command/delete-tag-faq.command';
+import { UpdateTagFaqCommand } from './command/update-tag-faq.command';
+import { MoveDownTagFaqCommand } from './command/movedown-tag.faq.command';
+import ChangeTagFaqDto from './dto/tag-faq.dto';
+import UpdateTagFaqDto from './dto/update-tag-faq.dto';
+import AddTagFaqDto from './dto/add-tag-faq.dto';
 
 @ApiTags('Admin/Category')
 @Controller()
-export class SubCategoryController {
+export class TagController {
   constructor(
     private readonly fileService: FileService,
     private readonly commandBus: CommandBus,
@@ -59,14 +59,12 @@ export class SubCategoryController {
   @Post()
   @ApiBearerAuth()
   @AdminAuth()
-  @ApiBody({ type: CreateSubCategoryDto })
+  @ApiBody({ type: CreateTagDto })
   @ApiOkResponse({ type: SuccessResponse })
-  async createSubCategory(
-    @Body() request: CreateSubCategoryDto,
-  ): Promise<SuccessResponse> {
+  async createTag(@Body() request: CreateTagDto): Promise<SuccessResponse> {
     this.commandBus.execute(
-      new CreateSubCategoryCommand(
-        request.category_id,
+      new CreateTagCommand(
+        request.sub_category_id,
         request.title_fa,
         request.title_en,
         request.thumbnail,
@@ -97,7 +95,7 @@ export class SubCategoryController {
   })
   @ApiResponse({ type: UploadFileResponse })
   @UseInterceptors(FileInterceptor('thumbnail'))
-  async uploadSubCategoryThumbnailImage(
+  async uploadTagThumbnailImage(
     @UploadedFile() file: Express.Multer.File,
   ): Promise<UploadFileResponse> {
     let uploadDto = new UploadFileDto(file);
@@ -126,7 +124,7 @@ export class SubCategoryController {
   })
   @ApiResponse({ type: UploadFileResponse })
   @UseInterceptors(FileInterceptor('banner'))
-  async uploadSubCategoryBannerImage(
+  async uploadTagBannerImage(
     @UploadedFile() file: Express.Multer.File,
   ): Promise<UploadFileResponse> {
     let uploadDto = new UploadFileDto(file);
@@ -142,22 +140,22 @@ export class SubCategoryController {
   @ApiBearerAuth()
   @AdminAuth()
   @ApiOkResponse({
-    type: SubCategoryListDto,
-    description: '200. Success. Returns list of subcategories',
+    type: TagListDto,
+    description: '200. Success. Returns list of tags',
   })
   @HttpCode(HttpStatus.OK)
-  async getSubCategoryList(
+  async getTagList(
     @Param('id', new ParseObjectIdPipe()) id: string,
-  ): Promise<SubCategoryListDto> {
-    return this.queryBus.execute(new SubCategoryListQuery(id));
+  ): Promise<TagListDto> {
+    return this.queryBus.execute(new TagListQuery(id));
   }
 
   @Get(':id')
   @ApiBearerAuth()
   @AdminAuth()
   @ApiOkResponse({
-    type: SubCategoryDto,
-    description: '200. Success. Returns a sub category detail',
+    type: TagDto,
+    description: '200. Success. Returns a tag detail',
   })
   @HttpCode(HttpStatus.OK)
   @ApiParam({
@@ -166,20 +164,20 @@ export class SubCategoryController {
     required: true,
     description: 'id of element',
   })
-  async getSubCategoryDetail(
+  async getTagDetail(
     @Param('id', new ParseObjectIdPipe()) id: string,
-  ): Promise<SubCategoryDto> {
-    return this.queryBus.execute(new SubCategoryDetailQuery(id));
+  ): Promise<TagDto> {
+    return this.queryBus.execute(new TagDetailQuery(id));
   }
 
   @Patch()
   @ApiBearerAuth()
   @AdminAuth()
-  @ApiBody({ type: UpdateSubCategoryDto })
+  @ApiBody({ type: UpdateTagDto })
   @ApiOkResponse({ type: SuccessResponse })
-  async updateSubCategory(@Body() request: UpdateSubCategoryDto) {
+  async updateTag(@Body() request: UpdateTagDto) {
     this.commandBus.execute(
-      new UpdateSubCategoryCommand(
+      new UpdateTagCommand(
         request.id,
         request.title_fa,
         request.title_en,
@@ -203,28 +201,26 @@ export class SubCategoryController {
     required: true,
     description: 'id of element',
   })
-  async deleteSubCategory(
+  async deleteTag(
     @Param('id', new ParseObjectIdPipe()) id: string,
   ): Promise<SuccessResponse> {
-    this.commandBus.execute(new DeleteSubCategoryCommand(id));
+    this.commandBus.execute(new DeleteTagCommand(id));
     return new SuccessResponse();
   }
 
   @Post('faq-list/add')
   @ApiBearerAuth()
   @AdminAuth()
-  @ApiBody({ type: AddSubCategoryFaqDto })
+  @ApiBody({ type: AddTagFaqDto })
   @ApiOkResponse({
     type: SuccessResponse,
     description: '201, Success',
   })
   @HttpCode(HttpStatus.OK)
-  async addFAQItem(
-    @Body() request: AddSubCategoryFaqDto,
-  ): Promise<SuccessResponse> {
+  async addFAQItem(@Body() request: AddTagFaqDto): Promise<SuccessResponse> {
     this.commandBus.execute(
-      new AddSubCategoryFaqCommand(
-        request.sub_category_id,
+      new AddCategoryFaqCommand(
+        request.tag_id,
         request.answer,
         request.question,
       ),
@@ -235,17 +231,17 @@ export class SubCategoryController {
   @Delete('faq-list/delete')
   @ApiBearerAuth()
   @AdminAuth()
-  @ApiBody({ type: ChangeSubCategoryFaqDto })
+  @ApiBody({ type: ChangeTagFaqDto })
   @ApiOkResponse({
     type: SuccessResponse,
     description: '200, Success',
   })
   @HttpCode(HttpStatus.OK)
   async deleteFaqItem(
-    @Body() request: ChangeSubCategoryFaqDto,
+    @Body() request: ChangeTagFaqDto,
   ): Promise<SuccessResponse> {
     this.commandBus.execute(
-      new DeleteSubCategoryFaqCommand(request.sub_category_id, request.id),
+      new DeleteTagFaqCommand(request.tag_id, request.id),
     );
     return new SuccessResponse();
   }
@@ -253,18 +249,18 @@ export class SubCategoryController {
   @Patch('faq-list/update')
   @ApiBearerAuth()
   @AdminAuth()
-  @ApiBody({ type: UpdateSubCategoryFaqDto })
+  @ApiBody({ type: UpdateTagFaqDto })
   @ApiOkResponse({
     type: SuccessResponse,
     description: '200, Success',
   })
   @HttpCode(HttpStatus.OK)
   async updateFaqItem(
-    @Body() request: UpdateSubCategoryFaqDto,
+    @Body() request: UpdateTagFaqDto,
   ): Promise<SuccessResponse> {
     this.commandBus.execute(
-      new UpdateSubCategoryFaqCommand(
-        request.sub_category_id,
+      new UpdateTagFaqCommand(
+        request.tag_id,
         request.id,
         request.answer,
         request.question,
@@ -276,17 +272,17 @@ export class SubCategoryController {
   @Post('faq-list/move-up')
   @ApiBearerAuth()
   @AdminAuth()
-  @ApiBody({ type: ChangeSubCategoryFaqDto })
+  @ApiBody({ type: ChangeTagFaqDto })
   @ApiOkResponse({
     type: SuccessResponse,
     description: '200, Success',
   })
   @HttpCode(HttpStatus.OK)
   async moveUpFaqItem(
-    @Body() request: ChangeSubCategoryFaqDto,
+    @Body() request: ChangeTagFaqDto,
   ): Promise<SuccessResponse> {
     this.commandBus.execute(
-      new MoveUpSubCategoryFaqCommand(request.sub_category_id, request.id),
+      new MoveDownTagFaqCommand(request.tag_id, request.id),
     );
     return new SuccessResponse();
   }
@@ -294,17 +290,17 @@ export class SubCategoryController {
   @Post('faq-list/move-down')
   @ApiBearerAuth()
   @AdminAuth()
-  @ApiBody({ type: ChangeSubCategoryFaqDto })
+  @ApiBody({ type: ChangeTagFaqDto })
   @ApiOkResponse({
     type: SuccessResponse,
     description: '200, Success',
   })
   @HttpCode(HttpStatus.OK)
   async moveDownFaqItem(
-    @Body() request: ChangeSubCategoryFaqDto,
+    @Body() request: ChangeTagFaqDto,
   ): Promise<SuccessResponse> {
     this.commandBus.execute(
-      new MoveDownSubCategoryFaqCommand(request.sub_category_id, request.id),
+      new MoveDownTagFaqCommand(request.tag_id, request.id),
     );
     return new SuccessResponse();
   }

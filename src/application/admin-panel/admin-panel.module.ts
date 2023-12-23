@@ -6,6 +6,7 @@ import BrandModule from './brand/brand.module';
 import ModelModule from './model/model.module';
 import CategoryModule from './category/category.module';
 import SubCategoryModule from './subcategory/subcategory.module';
+import TagModule from './tag/tag.module';
 
 const routes: Routes = [
   {
@@ -17,6 +18,7 @@ const routes: Routes = [
       { path: '/model', module: ModelModule },
       { path: '/category', module: CategoryModule },
       { path: '/subcategory', module: SubCategoryModule },
+      { path: '/tag', module: TagModule },
     ],
   },
 ];
@@ -30,6 +32,7 @@ const routes: Routes = [
     ModelModule,
     CategoryModule,
     SubCategoryModule,
+    TagModule,
   ],
   controllers: [],
   providers: [],
