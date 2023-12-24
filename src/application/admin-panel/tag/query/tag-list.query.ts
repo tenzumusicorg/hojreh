@@ -2,12 +2,17 @@ import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { TagItemDto, TagListDto } from '../dto/tag-list.dto';
 import { ITagRepository } from 'src/domain/tag/interface/ITag.repository';
+import { PaginationParams } from 'src/domain/database/pagination-params.interface';
 
 export class TagListQuery {
-  constructor(public sub_category_id: string) {
-    // public limit: number, // public page: number,
-    // public query: string,
-  }
+  constructor(
+    public pagination: PaginationParams,
+    public filter: {
+      query: string;
+      category_id: string;
+      subcategory_id: string;
+    },
+  ) {}
 }
 
 @QueryHandler(TagListQuery)
@@ -18,43 +23,87 @@ export class TagListHandler implements IQueryHandler<TagListQuery> {
   ) {}
 
   async execute(query: TagListQuery) {
-    let foundTags = await this.tagRepository.model().aggregate([
-      {
+    const aggregationPipeline = [];
+
+    if (query.filter && query.filter.query) {
+      aggregationPipeline.push({
         $match: {
-          subcategory_id: query.sub_category_id,
+          $or: [
+            { 'title.fa': new RegExp(query.filter.query, 'i') },
+            { 'title.en': new RegExp(query.filter.query, 'i') },
+          ],
         },
+      });
+    }
+    aggregationPipeline.push({
+      $lookup: {
+        from: 'subcategories',
+        localField: 'sub_category_id',
+        foreignField: '_id',
+        as: 'sub_category',
       },
-      {
-        $lookup: {
-          from: 'products',
-          localField: '_id',
-          foreignField: 'tags',
-          as: 'products',
-        },
-      },
-      {
-        $project: {
-          _id: 1,
-          title: 1,
-          thumbnail: 1,
-          productCount: { $size: '$products' },
-        },
-      },
-    ]);
+    });
 
-    let res = new TagListDto();
-    res.items = new Array<TagItemDto>();
+    aggregationPipeline.push({
+      $lookup: {
+        from: 'categories',
+        localField: 'sub_category.category_id',
+        foreignField: '_id',
+        as: 'category',
+      },
+    });
 
-    for await (const category of foundTags) {
-      res.items.push({
-        id: category.id,
-        thumbnail: category.thumbnail.url,
-        thumbnail_id: category.thumbnail.url,
-        title: category.title,
-        product_count: category.productCount,
+    if (query.filter && query.filter.category_id) {
+      aggregationPipeline.push({
+        $match: {
+          'category._id': query.filter.category_id,
+        },
+      });
+    }
+    if (query.filter && query.filter.subcategory_id) {
+      aggregationPipeline.push({
+        $match: {
+          'sub_category._id': query.filter.subcategory_id,
+        },
       });
     }
 
-    return res;
+    const { page, limit } = query.pagination;
+    const skip = (page - 1) * limit;
+
+    aggregationPipeline.push({
+      $skip: skip,
+    });
+
+    aggregationPipeline.push({
+      $limit: limit,
+    });
+
+    let foundTags = await this.tagRepository
+      .model()
+      .aggregate(aggregationPipeline);
+    let res = new TagListDto();
+    res.items = new Array<TagItemDto>();
+
+    for (const tag of foundTags) {
+      res.items.push({
+        id: tag._id,
+        title: tag.title,
+        thumbnail: !!tag.thumbnail ? tag.thumbnail.url : '',
+        thumbnail_id: !!tag.thumbnail ? tag.thumbnail._id : '',
+        banner: !!tag.banner ? tag.banner.url : '',
+        banner_id: !!tag.banner ? tag.banner._id : '',
+        subcategory: {
+          id: tag.sub_category_id._id,
+          title: tag.sub_category_id.title,
+          category: {
+            id: tag.sub_category_id.category_id._id,
+            title: tag.sub_category_id.category_id.title,
+          },
+        },
+      });
+
+      return res;
+    }
   }
 }

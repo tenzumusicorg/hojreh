@@ -16,6 +16,7 @@ import { MoveUpTagFaqHandler } from './command/moveup-tag-faq-command';
 import { MoveDownTagFaqHandler } from './command/movedown-tag.faq.command';
 import { DeleteTagFaqHandler } from './command/delete-tag-faq.command';
 import { UpdateTagFaqHandler } from './command/update-tag-faq.command';
+import { TagStatusHandler } from './query/tag-status.query';
 
 export const commandHandlers = [
   AddTagFaqHandler,
@@ -27,7 +28,11 @@ export const commandHandlers = [
   DeleteTagFaqHandler,
   UpdateTagFaqHandler,
 ];
-export const queryHandlers = [TagListHandler, TagDetailHandler];
+export const queryHandlers = [
+  TagListHandler,
+  TagDetailHandler,
+  TagStatusHandler,
+];
 
 @Module({
   imports: [

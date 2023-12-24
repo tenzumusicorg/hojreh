@@ -138,7 +138,7 @@ export class SubCategoryController {
     return res;
   }
 
-  @Get('list')
+  @Get('list/:id')
   @ApiBearerAuth()
   @AdminAuth()
   @ApiOkResponse({

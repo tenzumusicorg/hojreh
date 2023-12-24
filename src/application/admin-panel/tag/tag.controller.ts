@@ -32,7 +32,7 @@ import UploadFileResponse, {
 import ParseObjectIdPipe from 'src/infrastructure/middleware/pipes/parse-object-id.pipe';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { CreateTagCommand } from './command/create-tag.command';
-import { TagListDto } from './dto/tag-list.dto';
+import { GetTagListDto, TagListDto } from './dto/tag-list.dto';
 import { TagListQuery } from './query/tag-list.query';
 import { TagDto } from './dto/tag.dto';
 import { TagDetailQuery } from './query/tag-detail.query';
@@ -46,6 +46,8 @@ import { MoveDownTagFaqCommand } from './command/movedown-tag.faq.command';
 import ChangeTagFaqDto from './dto/tag-faq.dto';
 import UpdateTagFaqDto from './dto/update-tag-faq.dto';
 import AddTagFaqDto from './dto/add-tag-faq.dto';
+import { GetTagsStatusDto, TagsStatusDto } from './dto/tag-status.dto';
+import { TagStatusQuery } from './query/tag-status.query';
 
 @ApiTags('Admin/Category')
 @Controller()
@@ -136,7 +138,7 @@ export class TagController {
     return res;
   }
 
-  @Get('list')
+  @Post('list')
   @ApiBearerAuth()
   @AdminAuth()
   @ApiOkResponse({
@@ -144,10 +146,23 @@ export class TagController {
     description: '200. Success. Returns list of tags',
   })
   @HttpCode(HttpStatus.OK)
-  async getTagList(
-    @Param('id', new ParseObjectIdPipe()) id: string,
-  ): Promise<TagListDto> {
-    return this.queryBus.execute(new TagListQuery(id));
+  async getTagList(@Body() request: GetTagListDto): Promise<TagListDto> {
+    return this.queryBus.execute(
+      new TagListQuery(request.pagination, request.filter),
+    );
+  }
+
+  @Post('get-status')
+  @ApiBearerAuth()
+  @AdminAuth()
+  @ApiBody({
+    type: GetTagsStatusDto,
+  })
+  @ApiOkResponse({ type: TagsStatusDto })
+  async getTagStatus(
+    @Body() request: GetTagsStatusDto,
+  ): Promise<TagsStatusDto> {
+    return this.queryBus.execute(new TagStatusQuery(request.tags));
   }
 
   @Get(':id')
