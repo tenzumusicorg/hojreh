@@ -7,29 +7,29 @@ import { Tag } from '../entity/tag.entity';
 @Injectable()
 export default class TagRepository implements ITagRepository {
   constructor(
-    @InjectModel('Tag') private categoryModel: MongooseModel<Tag>,
+    @InjectModel('Tag') private tagModel: MongooseModel<Tag>,
     @InjectModel('Tag')
     private pgModel: PaginateModel<Tag>,
   ) {}
 
   async createOne(tag: Tag) {
-    return await this.categoryModel.create({
+    return await this.tagModel.create({
       _id: new Types.ObjectId(),
       ...tag,
     });
   }
 
   async findOne(id: string) {
-    return await this.categoryModel.findOne({
+    return await this.tagModel.findOne({
       _id: id,
     });
   }
 
   async find() {
-    return await this.categoryModel.find();
+    return await this.tagModel.find();
   }
   async updateOne(id: string, entity: Partial<Tag>) {
-    await this.categoryModel.updateOne(
+    await this.tagModel.updateOne(
       {
         _id: id,
       },
@@ -42,7 +42,7 @@ export default class TagRepository implements ITagRepository {
   }
 
   async deleteOne(id: string) {
-    return await this.categoryModel.deleteOne({
+    return await this.tagModel.deleteOne({
       _id: id,
     });
   }

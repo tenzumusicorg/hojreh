@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import paginate from 'mongoose-paginate-v2';
-import { FileModel, FileSchema } from 'src/domain/file/schema/file.schema';
+import * as paginate from 'mongoose-paginate-v2';
 
 @Schema()
 export class ColorModel {
@@ -11,8 +10,8 @@ export class ColorModel {
   @Prop()
   color_fa: string;
 
-  @Prop({ type: FileSchema })
-  link: FileModel;
+  @Prop()
+  link: string;
 }
 export type ColorDocument = HydratedDocument<ColorModel>;
 export const ColorSchema = SchemaFactory.createForClass(ColorModel).set(
