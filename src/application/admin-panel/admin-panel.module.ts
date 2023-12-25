@@ -8,6 +8,7 @@ import CategoryModule from './category/category.module';
 import SubCategoryModule from './subcategory/subcategory.module';
 import TagModule from './tag/tag.module';
 import ColorModule from './color/color.module';
+import StaticModule from './static/static.module';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
       { path: '/subcategory', module: SubCategoryModule },
       { path: '/tag', module: TagModule },
       { path: '/color', module: ColorModule },
+      { path: '/static', module: StaticModule },
     ],
   },
 ];
@@ -36,6 +38,7 @@ const routes: Routes = [
     SubCategoryModule,
     TagModule,
     ColorModule,
+    StaticModule,
   ],
   controllers: [],
   providers: [],
