@@ -1,7 +1,5 @@
 import { IsMongoId, IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { Types } from 'mongoose';
-import { DualLanguageTextDto } from 'src/domain/content/dto/dual-language.dto';
 
 export default class UpdateCarouselDto {
   @ApiProperty({

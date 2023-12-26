@@ -106,9 +106,9 @@ export default class StaticsRepository {
     );
   }
 
-  async deleteCarousel(_id: Types.ObjectId) {
+  async deleteCarousel(id: string) {
     await this.carouselModel.deleteOne({
-      _id,
+      _id:id,
     });
   }
 
@@ -129,7 +129,7 @@ export default class StaticsRepository {
       .lean();
   }
 
-  public async findBannerById(id: Types.ObjectId): Promise<Banner | null> {
+  public async findBannerById(id:string): Promise<Banner | null> {
     return this.bannerModel.findOne({
       _id: id,
     });
