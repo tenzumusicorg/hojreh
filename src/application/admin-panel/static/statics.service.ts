@@ -6,29 +6,29 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 import StaticsRepository from './repo/statics.repo';
-import CreateVideoReqDto, { CreateVideoResDto } from './dto/create-video.dto';
-import GetVideoDetailResDto from './dto/get-video-detail.dto';
-import UpdateVideoReqDto, { UpdateVideoResDto } from './dto/update-video.dto';
-import { DeleteVideoResDto } from './dto/delete-video.dto';
+import CreateVideoReqDto, { CreateVideoResDto } from './dto/video/create-video.dto';
+import GetVideoDetailResDto from './dto/video/get-video-detail.dto';
+import UpdateVideoReqDto, { UpdateVideoResDto } from './dto/video/update-video.dto';
+import { DeleteVideoResDto } from './dto/video/delete-video.dto';
 import GetVideoListItemDto, {
   GetVideoListResDto,
-} from './dto/get-videos-list.dto';
+} from './dto/video/get-videos-list.dto';
 import {
   BadRequestExceptionMessage,
   NotFoundExceptionMessage,
 } from 'src/constants/exception.constants';
-import { DeleteCarouselResDto } from './dto/delete-carouesl.dto';
+import { DeleteCarouselResDto } from './dto/carousel/delete-carouesl.dto';
 import UpdateCarouselReqDto, {
   CarouselDto,
   UpdateCarouselResDto,
-} from './dto/update-carousel.dto';
-import GetCarouselDetailResDto from './dto/get-carouesl-detail.dto';
+} from './dto/carousel/update-carousel.dto';
+import GetCarouselDetailResDto from './dto/carousel/get-carouesl-detail.dto';
 import GetCarouselListItemDto, {
   GetCarouselListResDto,
-} from './dto/get-carouesl-list.dto';
+} from './dto/carousel/get-carouesl-list.dto';
 import CreateCarouselReqDto, {
   CreateCarouselResDto,
-} from './dto/create-carouesl.dto';
+} from './dto/carousel/create-carouesl.dto';
 import SetAboutUsContentReqDto, {
   SetAboutUsContentResDto,
 } from './dto/set-about-us.dto';
@@ -56,19 +56,19 @@ import MoveFaqItemOrderUpReqDto from './dto/change-faq-order-up.dto';
 import MoveFaqItemOrderDownReqDto from './dto/change-faq-order-down.dto';
 import MoveUpCarouselReqDto, {
   MoveUpCarouselResDto,
-} from './dto/move-up-carousel.dto';
+} from './dto/carousel/move-up-carousel.dto';
 import MoveDownCarouselReqDto, {
   MoveDownCarouselResDto,
-} from './dto/move-down-carousel.dto';
+} from './dto/carousel/move-down-carousel.dto';
 import { CarouselBaseIndex } from './constants/carousel-constants';
 import FileService from 'src/modules/app/file/file.service';
 import { FileTypeEnum } from 'src/modules/app/file/constants/file-type.enum';
 import { WEBSITE_BUCKET } from 'src/modules/app/file/constants/app-bucket.constant';
-import UpdateBannerReqDto, { BannerDto } from './dto/update-banner.dto';
+import UpdateBannerReqDto, { BannerDto } from './dto/banner/update-banner.dto';
 import { BannerNames } from './constants/banner-constants';
 import GetBannerDetailResDto, {
   GetBannerListResDto,
-} from './dto/get-banner-detail.dto';
+} from './dto/banner/get-banner-detail.dto';
 
 @Injectable()
 export default class StaticsService implements OnModuleInit {
@@ -372,7 +372,7 @@ export default class StaticsService implements OnModuleInit {
   }
 
   public async updateBanner(request: UpdateBannerReqDto) {
-    let foundBanner = await this.staticsRepository.findBannerById(
+ let foundBanner = await this.staticsRepository.findBannerById(
       request.banner_id,
     );
     if (!foundBanner) throw new NotFoundException(NotFoundExceptionMessage);
@@ -392,7 +392,7 @@ export default class StaticsService implements OnModuleInit {
       request.image.mimetype
     );
     bannerDto.image = createdImage._id as any
-    await this.staticsRepository.updateBanner(foundBanner._id, bannerDto);
+    await this.staticsRepository.updateBanner(foundBanner._id, bannerDto);   
   }
 
   async getBannerDetail(id: Types.ObjectId) {

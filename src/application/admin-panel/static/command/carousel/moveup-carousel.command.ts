@@ -21,7 +21,7 @@ export class MoveUpCarouselHandler implements ICommandHandler<MoveUpCarouselComm
         let foundCarouselList = await this.staticRepository.findAllCarousels();
 
         let foundCarouselIndex = foundCarouselList.findIndex((element) => {
-          return element.id.toString() === request.carousel_id.toString();
+          return element.id === command.id;
         });
         if (foundCarouselIndex < -1) {
           throw new BadRequestException(BadRequestExceptionMessage);
@@ -43,8 +43,8 @@ export class MoveUpCarouselHandler implements ICommandHandler<MoveUpCarouselComm
           foundCarouselList[foundCarouselIndex].id,
           movedUpCarouselDto,
         );
-        await this.staticsRepository.updateCarousel(
-          foundCarouselList[foundCarouselIndex - 1]._id,
+        await this.staticRepository.updateCarousel(
+          foundCarouselList[foundCarouselIndex - 1].id,
           movedDownCarouselDto,
         );
 
