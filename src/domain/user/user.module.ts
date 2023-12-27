@@ -23,4 +23,4 @@ import UsersRepository from './repository/users.repository';
   ],
   exports: [IUserRepository],
 })
-export default class TagDomainModule {}
+export default class UserDomainModule {}
