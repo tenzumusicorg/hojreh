@@ -43,17 +43,17 @@ import SetPolicyContentReqDto, {
 import GetPolicyContentResDto from './dto/get-policy-content.dto';
 import SetFAQContentReqDto, {
   SetFAQContentResDto,
-} from './dto/set-faq-content.dto';
-import GetFaqContentResDto from './dto/get-faq-content.dto';
+} from './dto/faq/set-faq-content.dto';
+import GetFaqContentResDto from './dto/faq/get-faq-content.dto';
 import SetFooterContentReqDto, {
   SetFooterContentResDto,
 } from './dto/set-footer.dto';
 import GetFooterContentResDto from './dto/get-footer.dto';
-import AddFaqItemReqDto from './dto/add-faq.dto';
-import UpdateFaqItemReqDto from './dto/update-faq.dto';
-import DeleteFaqItemReqDto from './dto/delete-faq.dto';
-import MoveFaqItemOrderUpReqDto from './dto/change-faq-order-up.dto';
-import MoveFaqItemOrderDownReqDto from './dto/change-faq-order-down.dto';
+import AddFaqItemReqDto from './dto/faq/add-faq.dto';
+import UpdateFaqItemReqDto from './dto/faq/update-faq.dto';
+import DeleteFaqItemReqDto from './dto/faq/delete-faq.dto';
+import MoveFaqItemOrderUpReqDto from './dto/faq/change-faq-order-up.dto';
+import MoveFaqItemOrderDownReqDto from './dto/faq/change-faq-order-down.dto';
 import MoveUpCarouselReqDto, {
   MoveUpCarouselResDto,
 } from './dto/carousel/move-up-carousel.dto';

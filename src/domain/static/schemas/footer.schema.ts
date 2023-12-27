@@ -5,7 +5,7 @@ import {
   DualLanguageTextSchema,
 } from 'src/domain/content/schema/dual-language.schema';
 
-export class FooterSocialMedia {
+export class FooterSocialMediaModel {
   @Prop()
   instagram: string;
 
@@ -24,6 +24,9 @@ export class FooterSocialMedia {
   @Prop()
   linkedin: string;
 }
+export const FooterSocialMediaSchema = SchemaFactory.createForClass(
+  FooterSocialMediaModel,
+).set('versionKey', false);
 
 @Schema()
 export class FooterContentModel {
@@ -40,8 +43,9 @@ export class FooterContentModel {
 
   @Prop({
     required: true,
+    type:FooterSocialMediaSchema
   })
-  social_media: FooterSocialMedia;
+  social_media: FooterSocialMediaModel;
 }
 
 export type FooterContentDocument = HydratedDocument<FooterContentModel>;

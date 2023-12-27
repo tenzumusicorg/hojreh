@@ -1,6 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import StaticsRepository from 'src/domain/static/repository/statics.repository';
-import BannerItemDto, { BannerListDto } from '../../dto/Banner/get-Banners-list.dto';
+import BannerDto, { BannerListDto } from '../../dto/banner/get-banner-detail.dto';
 
 export class BannerListQuery {
   constructor() {}
@@ -13,9 +13,9 @@ export class BannerListHandler implements IQueryHandler<BannerListQuery> {
   async execute() {
     let foundBanners = await this.staticsRepository.findAllBanner();
     let response = new BannerListDto();
-    response.items = new Array<BannerItemDto>();
+    response.items = new Array<BannerDto>();
     for  (const banner of foundBanners) {
-      let res = new BannerItemDto();
+      let res = new BannerDto();
       res.id = banner.id;
       res.description = banner.description;
       res.link = banner.link;
