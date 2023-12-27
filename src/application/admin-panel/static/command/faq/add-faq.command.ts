@@ -1,39 +1,37 @@
-import { Inject, NotFoundException } from '@nestjs/common';
+import { BadRequestException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { ICategoryRepository } from 'src/domain/category/interface/ICategory.repository';
 import { DualLanguageText } from 'src/domain/content/entity/dual-language.entity';
-import { NotFoundExceptionMessage } from 'src/infrastructure/middleware/exceptions/exception.constants';
+import { BadRequestExceptionMessage } from 'src/infrastructure/middleware/exceptions/exception.constants';
 import FaqRepository from 'src/domain/faq/faq.repository';
+import StaticsRepository from 'src/domain/static/repository/statics.repository';
 
-export class AddCategoryFaqCommand {
+export class AddFaqContentCommand {
   constructor(
-    public category_id: string,
     public answer: DualLanguageText,
     public question: DualLanguageText,
   ) {}
 }
 
-@CommandHandler(AddCategoryFaqCommand)
-export class AddCategoryFaqHandler
-  implements ICommandHandler<AddCategoryFaqCommand>
+@CommandHandler(AddFaqContentCommand)
+export class AddFaqContentHandler
+  implements ICommandHandler<AddFaqContentCommand>
 {
   constructor(
-    @Inject(ICategoryRepository)
-    private readonly categoryRepository: ICategoryRepository,
+    private readonly staticRepository: StaticsRepository,
     private readonly faqRepository: FaqRepository,
   ) {}
 
-  async execute(command: AddCategoryFaqCommand): Promise<void> {
-    let foundCategory = await this.categoryRepository.findOne(
-      command.category_id,
-    );
-    if (!foundCategory) throw new NotFoundException(NotFoundExceptionMessage);
+  async execute(command: AddFaqContentCommand): Promise<void> {
+    let foundFaqContent = await this.staticRepository.getFAQContent();
 
-    foundCategory.faq_list = this.faqRepository.createFaq(
-      { answer: command.answer, question: command.question },
-      foundCategory.faq_list,
-    );
-
-    this.categoryRepository.updateOne(foundCategory.id, foundCategory);
+    if (!foundFaqContent) 
+      throw new BadRequestException(BadRequestExceptionMessage);
+     else {
+    foundFaqContent.faq_list=  this.faqRepository.createFaq(command,foundFaqContent.faq_list)
+      await this.staticRepository.updateFAQContent(
+        foundFaqContent.id,
+        foundFaqContent,
+      );
+    }
   }
 }

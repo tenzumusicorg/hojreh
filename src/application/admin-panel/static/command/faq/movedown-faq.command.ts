@@ -1,36 +1,38 @@
-import { NotFoundException } from '@nestjs/common';
+import { BadRequestException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { NotFoundExceptionMessage } from 'src/infrastructure/middleware/exceptions/exception.constants';
 import FaqRepository from 'src/domain/faq/faq.repository';
-import CategoryRepository from 'src/domain/category/repository/category.repository';
+import StaticsRepository from 'src/domain/static/repository/statics.repository';
 
-export class MoveDownCategoryFaqCommand {
+export class MoveUpFaqContentCommand {
   constructor(
-    public category_id: string,
     public id: string,
   ) {}
 }
 
-@CommandHandler(MoveDownCategoryFaqCommand)
-export class MoveDownCategoryFaqHandler
-  implements ICommandHandler<MoveDownCategoryFaqCommand>
+@CommandHandler(MoveUpFaqContentCommand)
+export class MoveUpFaqContentHandler
+  implements ICommandHandler<MoveUpFaqContentCommand>
 {
   constructor(
-    private readonly categoryRepository: CategoryRepository,
+    private readonly staticRepository: StaticsRepository,
     private readonly faqRepository: FaqRepository,
   ) {}
 
-  async execute(command: MoveDownCategoryFaqCommand): Promise<void> {
-    let foundCategory = await this.categoryRepository.findOne(
-      command.category_id,
-    );
-    if (!foundCategory) throw new NotFoundException(NotFoundExceptionMessage);
+  async execute(command: MoveUpFaqContentCommand): Promise<void> {
+    let foundFaqContent = await this.staticRepository.getFAQContent();
 
-    foundCategory.faq_list = this.faqRepository.moveDownFaq(
-      command.id,
-      foundCategory.faq_list,
-    );
+    if (!foundFaqContent) 
+      throw new BadRequestException(NotFoundExceptionMessage);
+     else {
+      foundFaqContent.faq_list=  this.faqRepository.moveDownFaq(command.id,foundFaqContent.faq_list)
 
-    this.categoryRepository.updateOne(foundCategory.id, foundCategory);
+
+        await this.staticRepository.updateFAQContent(
+          foundFaqContent.id,
+          foundFaqContent,
+        );
+      }
+    
   }
 }

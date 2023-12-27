@@ -1,37 +1,38 @@
-import { Inject, NotFoundException } from '@nestjs/common';
+import { BadRequestException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { ICategoryRepository } from 'src/domain/category/interface/ICategory.repository';
 import { NotFoundExceptionMessage } from 'src/infrastructure/middleware/exceptions/exception.constants';
 import FaqRepository from 'src/domain/faq/faq.repository';
+import StaticsRepository from 'src/domain/static/repository/statics.repository';
 
-export class DeleteCategoryFaqCommand {
+export class DeleteFaqContentCommand {
   constructor(
-    public category_id: string,
     public id: string,
   ) {}
 }
 
-@CommandHandler(DeleteCategoryFaqCommand)
-export class DeleteCategoryFaqHandler
-  implements ICommandHandler<DeleteCategoryFaqCommand>
+@CommandHandler(DeleteFaqContentCommand)
+export class DeleteFaqContentHandler
+  implements ICommandHandler<DeleteFaqContentCommand>
 {
   constructor(
-    @Inject(ICategoryRepository)
-    private readonly categoryRepository: ICategoryRepository,
+    private readonly staticRepository: StaticsRepository,
     private readonly faqRepository: FaqRepository,
   ) {}
 
-  async execute(command: DeleteCategoryFaqCommand): Promise<void> {
-    let foundCategory = await this.categoryRepository.findOne(
-      command.category_id,
-    );
-    if (!foundCategory) throw new NotFoundException(NotFoundExceptionMessage);
+  async execute(command: DeleteFaqContentCommand): Promise<void> {
+    let foundFaqContent = await this.staticRepository.getFAQContent();
 
-    foundCategory.faq_list = this.faqRepository.deleteFaq(
-      command.id,
-      foundCategory.faq_list,
-    );
+    if (!foundFaqContent) 
+      throw new BadRequestException(NotFoundExceptionMessage);
+     else {
+      foundFaqContent.faq_list=  this.faqRepository.moveDownFaq(command.id,foundFaqContent.faq_list)
 
-    this.categoryRepository.updateOne(foundCategory.id, foundCategory);
-  }
+
+        await this.staticRepository.updateFAQContent(
+          foundFaqContent.id,
+          foundFaqContent,
+        );
+      }
+    
+}
 }
