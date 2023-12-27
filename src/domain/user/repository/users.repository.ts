@@ -28,7 +28,7 @@ export default class UsersRepository implements IUserRepository {
     return this.usersModel.findOne({ phone_number: phone_number });
   }
 
-  async findOne(id: string): Promise<User | null> {
+  async findOne(id: string): Promise<User> {
     return this.usersModel
       .findOne({ _id: id })
   }

@@ -1,43 +1,50 @@
-import { Types, Model } from 'mongoose';
+import { Types, Model, PaginateModel } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
-import {
-  PanelUserAddress,
-  UserAddressDocument,
-} from './schemas/user-address.schema';
-import { CreateUserAddressDto } from './dto/add-user-address.dto';
-import { UpdateUserAddressDto } from './dto/update-user-address.dto';
+import { UserAddress } from '../entity/user-address';
+import { IUserAddressRepository } from '../interface/IUserAddress.repository';
+
 
 @Injectable()
-export default class UserAddressRepository {
+export default class UserAddressRepository implements IUserAddressRepository{
   constructor(
-    @InjectModel(PanelUserAddress.name)
-    private userAddressModel: Model<UserAddressDocument>,
+    @InjectModel("UserAddress")
+    private userAddressModel: Model<UserAddress>,
+    @InjectModel('UserAddress')
+    private pgModel: PaginateModel<UserAddress>,
   ) {}
 
-  async findOneById(id: Types.ObjectId): Promise<PanelUserAddress | null> {
+  async findOne(id: string): Promise<UserAddress> {
     return this.userAddressModel.findOne({ _id: id });
   }
 
-  async findAll(user_id: Types.ObjectId): Promise<Array<PanelUserAddress>> {
-    return this.userAddressModel.find({ user_id }).lean();
+  async findByUser(user_id: string): Promise<Array<UserAddress>> {
+    return this.userAddressModel.find({ user_id })
   }
 
-  public async deleteUserAddress(id: Types.ObjectId) {
-    return this.userAddressModel.deleteOne({ _id: id });
+  async find(): Promise<Array<UserAddress>> {
+    return this.userAddressModel.find()
   }
 
-  public async create(
-    request: CreateUserAddressDto,
-  ): Promise<PanelUserAddress> {
+  public async deleteOne(id: string) {
+     this.userAddressModel.deleteOne({ _id: id });
+  }
+
+  public async createOne(
+    address: UserAddress,
+  ): Promise<UserAddress> {
     const newAddress = await this.userAddressModel.create({
       _id: new Types.ObjectId(),
-      ...request,
+      ...address,
     });
     return newAddress.toJSON();
   }
 
-  public async updateById(id: Types.ObjectId, data: UpdateUserAddressDto) {
-    return this.userAddressModel.updateOne({ _id: id }, { $set: data });
+  public async updateOne(id: string, data: Partial<UserAddress>) {
+     this.userAddressModel.updateOne({ _id: id }, { $set: data });
+  }
+
+  model() {
+    return this.pgModel;
   }
 }

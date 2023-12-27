@@ -7,6 +7,7 @@ export interface IUserAddressRepository extends IGenericRepository<UserAddress> 
   createOne(entity: UserAddress): Promise<UserAddress>;
   updateOne(id: string, entity: Partial<UserAddress>): Promise<void>;
   find(): Promise<UserAddress[]>;
+  findByUser(userId:string): Promise<UserAddress[]>;
   deleteOne(id: string): void;
   model(): PaginateModel<UserAddress>;
 }
