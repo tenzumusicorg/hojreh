@@ -3,20 +3,20 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { IUserRepository } from 'src/domain/user/interface/IUser.repository';
 
 
-export class AddUserAddressCommand {
+export class CreateUserCommand {
     constructor(
         public id: string,
 
     ) { }
 }
-@CommandHandler(AddUserAddressCommand)
-export class AddUserAddressHandler implements ICommandHandler<AddUserAddressCommand> {
+@CommandHandler(CreateUserCommand)
+export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     constructor(
         @Inject(IUserRepository)
     private readonly userRepository: IUserRepository,
     ) { }
 
-    async execute(command: AddUserAddressCommand): Promise<void> {
+    async execute(command: CreateUserCommand): Promise<void> {
   
     }
 }
