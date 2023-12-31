@@ -1,19 +1,14 @@
-import {
-  IsOptional,
-  IsString,
-  IsNotEmpty,
-  IsMongoId,
-} from 'class-validator';
+import { IsOptional, IsString, IsNotEmpty, IsMongoId } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export default class UpdateUserAddressDto {
   @ApiProperty({
     type: String,
-    example: 'object id'
+    example: 'object id',
   })
   @IsNotEmpty()
   @IsMongoId()
-  address_id: string 
+  address_id: string;
 
   @ApiProperty({
     type: String,
@@ -28,50 +23,40 @@ export default class UpdateUserAddressDto {
   })
   @IsOptional()
   @IsString()
-  no: string 
+  no: string;
 
   @ApiProperty({
     example: '1',
   })
   @IsOptional()
   @IsString()
-  floor: string 
+  floor: string;
 
   @ApiProperty({
     example: 'فردیس. فلکه چهارم. بلوار امام رضا خیابان میرزاخانی',
   })
   @IsOptional()
   @IsString()
-  postal_address: string
+  postal_address: string;
 
   @ApiProperty({
     example: '1877765467',
   })
   @IsOptional()
   @IsString()
-  postal_code: string
+  postal_code: string;
 
   @ApiProperty({
     example: '32.23234',
   })
   @IsOptional()
   @IsString()
-  lat: string 
+  lat: string;
 
   @ApiProperty({
     example: '43.7864834',
   })
   @IsOptional()
   @IsString()
-  lon: string 
-}
-
-export class UpdateUserAddressCommand {
-  title?: string;
-  no?: string;
-  floor?: string;
-  postal_address?: string;
-  postal_code?: string;
-  lat?: string;
-  lon?: string;
+  lon: string;
 }

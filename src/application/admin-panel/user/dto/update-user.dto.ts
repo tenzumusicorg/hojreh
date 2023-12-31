@@ -1,4 +1,14 @@
-import { IsNotEmpty, IsMongoId, IsEnum, IsEmail, IsOptional, IsString, MaxLength, MinLength, IsUrl } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsMongoId,
+  IsEnum,
+  IsEmail,
+  IsOptional,
+  IsString,
+  MaxLength,
+  MinLength,
+  IsUrl,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { UserStatusEnum } from 'src/domain/user/schema/user.schema';
 import { DualLanguageTextDto } from 'src/domain/content/dto/dual-language.dto';
@@ -7,7 +17,7 @@ export default class UpdateUserDto {
   @ApiProperty({ type: String, example: 'object id' })
   @IsNotEmpty()
   @IsMongoId()
-  user_id: string
+  user_id: string;
 
   @ApiProperty({
     type: String,
@@ -15,7 +25,7 @@ export default class UpdateUserDto {
   })
   @IsEmail()
   @IsOptional()
-  email: string = '';
+  email: string;
 
   @ApiProperty({
     type: String,
@@ -62,7 +72,8 @@ export default class UpdateUserDto {
 
   @ApiProperty({
     type: String,
-    example: 'https://tenzu-images.s3.ir-thr-at1.arvanstorage.com/1748ff1b-af0a-4011-9cc7-260c440bf0b3.webp',
+    example:
+      'https://tenzu-images.s3.ir-thr-at1.arvanstorage.com/1748ff1b-af0a-4011-9cc7-260c440bf0b3.webp',
   })
   @IsOptional()
   @IsUrl()

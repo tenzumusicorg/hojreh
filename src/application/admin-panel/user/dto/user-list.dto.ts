@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
 import {
   IsArray,
   IsEnum,
@@ -27,15 +26,15 @@ export class GetUserListDto {
   query: string;
 
   @ApiProperty({ enum: [UserStatusEnum], example: [UserStatusEnum.active] })
-  @IsEnum(UserStatusEnum ,{each: true})
+  @IsEnum(UserStatusEnum, { each: true })
   @IsArray()
   @IsNotEmpty()
   filter_status: UserStatusEnum[];
 }
 
 export class UserItemDto {
-  @ApiProperty({ type: String, example:'object id'})
-  id: string
+  @ApiProperty({ type: String, example: 'object id' })
+  id: string;
 
   @ApiProperty({ type: String, example: '09121234567' })
   phone_number: string;
@@ -61,21 +60,21 @@ export class UserItemDto {
 }
 
 export class UserListDto {
-  @ApiProperty({ type: Number,example:1 })
+  @ApiProperty({ type: Number, example: 1 })
   page: number;
 
-  @ApiProperty({ type: Number,example:13 })
+  @ApiProperty({ type: Number, example: 13 })
   total_pages: number;
 
-  @ApiProperty({ type: UserItemDto,isArray:true })
+  @ApiProperty({ type: UserItemDto, isArray: true })
   items: UserItemDto[];
 
-  @ApiProperty({ type: Number,example:1300 })
-  total_users: number
+  @ApiProperty({ type: Number, example: 1300 })
+  total_users: number;
 
-  @ApiProperty({ type: Number,example:135 })
-  total_users_in_month: number
+  @ApiProperty({ type: Number, example: 135 })
+  total_users_in_month: number;
 
-  @ApiProperty({ type: Number,example:100 })
-  total_customers: number
+  @ApiProperty({ type: Number, example: 100 })
+  total_customers: number;
 }

@@ -7,7 +7,7 @@ export default class VideoDto {
     type: Types.ObjectId,
     example: new Types.ObjectId(),
   })
-  id: Types.ObjectId;
+  id: string;
 
   @ApiProperty({
     type: DualLanguageTextDto,
