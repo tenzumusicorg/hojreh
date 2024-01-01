@@ -50,7 +50,7 @@ export class UserListHandler implements IQueryHandler<UserListQuery> {
 
     let foundUsersList = await this.userRepository
       .model()
-      .paginate(query, options);
+      .paginate(userQuery, options);
 
     let res = new UserListDto();
     res.page = foundUsersList.page || query.page;

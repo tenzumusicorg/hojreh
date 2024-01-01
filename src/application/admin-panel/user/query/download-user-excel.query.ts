@@ -3,6 +3,7 @@ import { IUserRepository } from 'src/domain/user/interface/IUser.repository';
 import { Inject } from '@nestjs/common';
 import { ExcelService } from 'src/infrastructure/file/execl.service';
 import FileService from 'src/infrastructure/file/file.service';
+import { UploadFileDto } from 'src/infrastructure/file/dto/upload-file.dto';
 
 export class UserExcelQuery {
   constructor() {}
@@ -17,7 +18,7 @@ export class UserExcelHandler implements IQueryHandler<UserExcelQuery> {
     private fileService: FileService,
   ) {}
 
-  async execute(query: UserExcelQuery) {
+  async execute() {
     let foundUsersList = await this.userRepository.find();
     let columns = [
       { header: 'User Id', key: '_id', width: 25 },
@@ -34,16 +35,11 @@ export class UserExcelHandler implements IQueryHandler<UserExcelQuery> {
       file_name: 'users',
     });
 
-    // let uploadedFile = await this.fileService.uploadFile(
-    //   excelBuffer!,
-    //   fileName,
-    //   WEBSITE_BUCKET,
-    //   'public-read',
-    //   'xlsx',
-    // );
-    // let link = await this.fileService.getUrl(fileName, WEBSITE_BUCKET);
-    // return {
-    //   download_url: link,
-    // };
+    let uploadedFileUrl = await this.fileService.uploadFile(
+      new UploadFileDto(excelBuffer, fileName, 'xlsx'),
+    );
+    return {
+      download_url: uploadedFileUrl,
+    };
   }
 }

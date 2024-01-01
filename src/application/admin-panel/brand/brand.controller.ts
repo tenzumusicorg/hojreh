@@ -96,7 +96,11 @@ export class BrandController {
   async uploadBrandLogo(
     @UploadedFile() file: Express.Multer.File,
   ): Promise<UploadFileResponse> {
-    let uploadDto = new UploadFileDto(file);
+    let uploadDto = new UploadFileDto(
+      file.buffer,
+      file.originalname,
+      file.mimetype,
+    );
     let res = new UploadFileResponse();
     res.url = await this.fileService.uploadFile(uploadDto);
     res.mim_type = file.mimetype;

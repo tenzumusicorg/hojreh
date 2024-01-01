@@ -11,16 +11,16 @@ export class UploadFileDto {
   file: Buffer;
   ACL: ObjectCannedACL = 'public-read';
   type: string;
-  constructor(uploadedFile: Express.Multer.File) {
-    this.key = setKey(uploadedFile);
-    this.file = uploadedFile.buffer;
+  constructor(buffer: Buffer, name: string, mimType: string) {
+    this.key = setKey(name);
+    this.file = buffer;
     this.ACL = 'public-read';
-    this.type = uploadedFile.mimetype;
+    this.type = mimType;
   }
 }
 
-function setKey(uploadedFile: Express.Multer.File) {
-  const ext = extname(uploadedFile.originalname).toLowerCase();
+function setKey(fileName: string) {
+  const ext = extname(fileName).toLowerCase();
   return `${uuid.randomUUID()}-${Date.now()}${ext}`;
 }
 

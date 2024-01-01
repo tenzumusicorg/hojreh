@@ -16,7 +16,7 @@ export class FileModel {
   mim_type: string;
 }
 
-export type FileDocument = HydratedDocument<FileModel>;
+// export type FileDocument = HydratedDocument<FileModel>;
 
 export const FileSchema = SchemaFactory.createForClass(FileModel).set(
   'versionKey',
