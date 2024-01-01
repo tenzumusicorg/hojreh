@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class DeleteCarouselDto {
+export class DeleteCarouselResDto {
   @ApiProperty({
     example: {
       en: 'Carousel deleted successfully',

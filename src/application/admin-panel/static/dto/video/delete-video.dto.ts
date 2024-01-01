@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class DeleteVideoDto {
+export class DeleteVideoResDto {
   @ApiProperty({
     example: {
       en: 'video deleted successfully',

@@ -43,6 +43,8 @@ export default class FileService {
   async uploadFile(request: UploadFileDto) {
     const s3Baseurl = this.getS3BaseUrl();
     const bucket = this.getS3Bucket();
+
+    let file = new File();
     try {
       await this.s3Service.createObject(
         request.key,
@@ -52,6 +54,7 @@ export default class FileService {
         request.type,
       );
       const url = `https://${bucket}.${s3Baseurl}/${request.key}`;
+
       return url;
     } catch (err) {
       throw new InternalServerErrorException('error with uploading file');

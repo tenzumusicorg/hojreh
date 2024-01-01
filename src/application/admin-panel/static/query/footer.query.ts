@@ -7,7 +7,7 @@ export class FooterQuery {
 }
 
 @QueryHandler(FooterQuery)
-export class BannerDetailHandler implements IQueryHandler<FooterQuery> {
+export class FooterDetailHandler implements IQueryHandler<FooterQuery> {
   constructor(private readonly staticRepository: StaticsRepository) {}
 
   async execute(query: FooterQuery) {

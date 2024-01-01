@@ -2,7 +2,7 @@ import { IsNotEmpty, IsString, IsUrl } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { DualLanguageTextDto } from 'src/domain/content/dto/dual-language.dto';
 
-export default class UpdateVideoReqDto {
+export default class UpdateVideoDto {
   @ApiProperty({
     type: String,
     example: 'object id',

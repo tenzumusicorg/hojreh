@@ -4,7 +4,6 @@ import { CarouselBaseIndex } from 'src/domain/static/constants/carousel-constant
 import { Carousel } from 'src/domain/static/entity/carouesl';
 import StaticsRepository from 'src/domain/static/repository/statics.repository';
 
-
 export class CreateCarouselCommand {
   constructor(
     public title_fa: string,
@@ -15,29 +14,28 @@ export class CreateCarouselCommand {
     public below_text_fa: string,
     public image: File,
     public link: string,
-
-  ) { }
+  ) {}
 }
 @CommandHandler(CreateCarouselCommand)
-export class CreateCarouselHandler implements ICommandHandler<CreateCarouselCommand> {
-  constructor(
-    private readonly staticRepository: StaticsRepository,
-  ) { }
+export class CreateCarouselHandler
+  implements ICommandHandler<CreateCarouselCommand>
+{
+  constructor(private readonly staticRepository: StaticsRepository) {}
 
   async execute(command: CreateCarouselCommand): Promise<void> {
     let list = await this.staticRepository.findAllCarousels();
 
     let carousel = new Carousel();
-    carousel.title = {fa:command.title_fa,en:command.title_en}
-    carousel.description = {fa:command.title_fa,en:command.title_en}
-    carousel.below_text = {fa:command.title_fa,en:command.title_en}
-    carousel.image = command.image
-    carousel.link = command.link
+    carousel.title = { fa: command.title_fa, en: command.title_en };
+    carousel.description = { fa: command.title_fa, en: command.title_en };
+    carousel.below_text = { fa: command.title_fa, en: command.title_en };
+    carousel.image = command.image;
+    carousel.link = command.link;
     if (list.length != 0) {
       carousel.index = list[0].index + 1;
     } else {
       carousel.index = CarouselBaseIndex;
-    } 
+    }
     this.staticRepository.createCarousel(carousel);
   }
 }

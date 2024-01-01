@@ -7,7 +7,7 @@ export class PolicyContentQuery {
 }
 
 @QueryHandler(PolicyContentQuery)
-export class BannerDetailHandler implements IQueryHandler<PolicyContentQuery> {
+export class PolicyContentHandler implements IQueryHandler<PolicyContentQuery> {
   constructor(private readonly staticRepository: StaticsRepository) {}
 
   async execute(query: PolicyContentQuery) {

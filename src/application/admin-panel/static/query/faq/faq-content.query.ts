@@ -7,19 +7,17 @@ export class FaqContentQuery {
 }
 
 @QueryHandler(FaqContentQuery)
-export class BannerDetailHandler implements IQueryHandler<FaqContentQuery> {
+export class FaqContentHandler implements IQueryHandler<FaqContentQuery> {
   constructor(private readonly staticRepository: StaticsRepository) {}
 
   async execute(query: FaqContentQuery) {
- 
-      let faqContent = await this.staticRepository.getFAQContent();
-      let res = new FaqContentDto();
-      if (faqContent) {
-        res.id = faqContent.id;
-        res.content = faqContent.content;
-        res.faq_list = faqContent.faq_list;
-      }
-      return res;
-    
+    let faqContent = await this.staticRepository.getFAQContent();
+    let res = new FaqContentDto();
+    if (faqContent) {
+      res.id = faqContent.id;
+      res.content = faqContent.content;
+      res.faq_list = faqContent.faq_list;
+    }
+    return res;
   }
 }

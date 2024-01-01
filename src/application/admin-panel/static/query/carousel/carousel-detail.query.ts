@@ -9,7 +9,9 @@ export class CarouselDetailQuery {
 }
 
 @QueryHandler(CarouselDetailQuery)
-export class CarouselDetailHandler implements IQueryHandler<CarouselDetailQuery> {
+export class CarouselDetailHandler
+  implements IQueryHandler<CarouselDetailQuery>
+{
   constructor(private readonly staticRepository: StaticsRepository) {}
 
   async execute(query: CarouselDetailQuery): Promise<CarouselDto> {
@@ -22,8 +24,8 @@ export class CarouselDetailHandler implements IQueryHandler<CarouselDetailQuery>
     res.id = foundCarousel.id;
     res.title = foundCarousel.title;
     res.description = foundCarousel.description;
-    res.image = foundCarousel.image?.url,
-    res.image_id = foundCarousel.image?.url
+    (res.image = foundCarousel.image?.url),
+      (res.image_id = foundCarousel.image?.url);
     res.link = foundCarousel.link;
     res.below_text = foundCarousel.below_text;
 

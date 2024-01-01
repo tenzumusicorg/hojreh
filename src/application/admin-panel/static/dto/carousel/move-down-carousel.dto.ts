@@ -1,14 +1,13 @@
 import { IsMongoId } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { Types } from 'mongoose';
 
 export default class MoveDownCarouselDto {
   @ApiProperty({
-    type: Types.ObjectId,
-    example: new Types.ObjectId(),
+    type: String,
+    example: 'object id',
   })
   @IsMongoId()
-  carousel_id: Types.ObjectId;
+  carousel_id: string;
 }
 
 export class MoveDownCarouselResDto {

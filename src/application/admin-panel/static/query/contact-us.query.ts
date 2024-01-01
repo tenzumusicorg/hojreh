@@ -7,7 +7,7 @@ export class ContactUsQuery {
 }
 
 @QueryHandler(ContactUsQuery)
-export class BannerDetailHandler implements IQueryHandler<ContactUsQuery> {
+export class ContactUsHandler implements IQueryHandler<ContactUsQuery> {
   constructor(private readonly staticRepository: StaticsRepository) {}
 
   async execute(query: ContactUsQuery) {

@@ -24,7 +24,6 @@ import ParseObjectIdPipe from 'src/infrastructure/middleware/pipes/parse-object-
 import { ColorListDto } from './dto/color-list.dto';
 import { ColorDto } from './dto/color.dto';
 import { CreateColorCommand } from './command/create-color.command';
-import { link } from 'fs';
 import { ColorListQuery } from './query/color-list.query';
 import { ColorDetailQuery } from './query/color-detail.query';
 import { UpdateColorCommand } from './command/update-color.command';
