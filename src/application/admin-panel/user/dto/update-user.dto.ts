@@ -93,13 +93,3 @@ export class UpdateUserResDto {
     fa: 'کاربر با موفقیت بروزرسانی شد',
   };
 }
-
-export class UpdateUserCommand {
-  status?: UserStatusEnum;
-  email?: string;
-  phone_number?: string;
-  first_name?: string;
-  last_name?: string;
-  national_code?: string;
-  avatar_image?: string;
-}

@@ -10,7 +10,7 @@ export class UserListQuery {
     public page: number,
     public limit: number,
     public query: string,
-    public status: UserStatusEnum,
+    public status: UserStatusEnum[],
   ) {}
 }
 

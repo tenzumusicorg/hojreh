@@ -116,7 +116,7 @@ import { MoveUpFaqContentCommand } from './command/faq/moveup-faq.command';
 @Controller()
 @ApiBearerAuth()
 @AdminAuth()
-export default class StaticsController {
+export default class StaticController {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,

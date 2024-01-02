@@ -33,6 +33,7 @@ import { AboutUsHandler } from './query/about-us.query';
 import { ContactUsHandler } from './query/contact-us.query';
 import { FooterDetailHandler } from './query/footer.query';
 import { BannerDetailHandler } from './query/banner/banner-detail.query';
+import StaticController from './static.controller';
 
 export const commandHandlers = [
   CreateDefaultBannerHandler,
@@ -72,7 +73,7 @@ export const queryHandlers = [
 
 @Module({
   imports: [CqrsModule, StaticsDomainModule, FaqDomainModule],
-  controllers: [],
+  controllers: [StaticController],
   providers: [...commandHandlers, ...queryHandlers],
   exports: [],
 })

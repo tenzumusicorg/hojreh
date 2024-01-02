@@ -7,6 +7,7 @@ import {
   PhoneAlreadyExistsExceptionMessage,
 } from 'src/infrastructure/middleware/exceptions/exception.constants';
 import { SendChangeUserEmailEvent } from '../event/send-change-user-email-event';
+import { UserStatusEnum } from 'src/domain/user/schema/user.schema';
 
 export class UpdateUserCommand {
   constructor(
@@ -16,7 +17,7 @@ export class UpdateUserCommand {
     public first_name: string,
     public last_name: string,
     public national_code: string,
-    public status: string,
+    public status: UserStatusEnum,
     public avatar_image: string,
   ) {}
 }
