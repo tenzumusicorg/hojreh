@@ -21,7 +21,7 @@ import { ProductVideoModel, ProductVideoSchema } from './video.schema';
 import { FeatureModel, FeatureSchema } from './feature.schema';
 import { PropertiesModel, PropertiesSchema } from './properties.schema';
 import { AdminModel } from 'src/domain/admin/schema/admin.schema';
-import paginate from 'mongoose-paginate-v2';
+import * as paginate from 'mongoose-paginate-v2';
 
 @Schema({ timestamps: true })
 export class ProductModel {
