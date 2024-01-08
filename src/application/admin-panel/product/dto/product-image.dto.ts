@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsMongoId, IsNotEmpty } from 'class-validator';
-import { Types } from 'mongoose';
 
 export class ProductImageDto {
   @ApiProperty({
@@ -8,14 +7,14 @@ export class ProductImageDto {
   })
   @IsMongoId()
   @IsNotEmpty()
-  url: Types.ObjectId;
+  url: string;
 
   @ApiProperty({
     example: '6406f19211c2440bc2e12f1b',
   })
   @IsMongoId()
   @IsNotEmpty()
-  thumbnail: Types.ObjectId;
+  thumbnail: string;
 
   @ApiProperty({
     example: true,
@@ -30,13 +29,13 @@ export class ProductImageResponseDto {
     example: 'image url',
   })
   @IsNotEmpty()
-  url: string
+  url: string;
 
   @ApiProperty({
     example: 'image url',
   })
   @IsNotEmpty()
-  thumbnail: string
+  thumbnail: string;
 
   @ApiProperty({
     example: true,
@@ -50,14 +49,14 @@ export class ProductImageResponseDto {
   })
   @IsMongoId()
   @IsNotEmpty()
-  url_id: Types.ObjectId;
+  url_id: string;
 
   @ApiProperty({
     example: '6406f19211c2440bc2e12f1b',
   })
   @IsMongoId()
   @IsNotEmpty()
-  thumbnail_id: Types.ObjectId;
+  thumbnail_id: string;
 }
 
 export class UploadProductImageResDto {
@@ -66,13 +65,12 @@ export class UploadProductImageResDto {
   })
   @IsMongoId()
   @IsNotEmpty()
-  url: Types.ObjectId;
+  url: string;
 
   @ApiProperty({
     example: '6406f19211c2440bc2e12f1b',
   })
   @IsMongoId()
   @IsNotEmpty()
-  thumbnail: Types.ObjectId;
+  thumbnail: string;
 }
-

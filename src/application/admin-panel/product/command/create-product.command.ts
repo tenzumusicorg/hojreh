@@ -20,7 +20,6 @@ import {
   PropertiesItemDualLanguage,
 } from 'src/domain/product/entity/properties';
 import { PropertyIndex } from 'src/domain/product/entity/property-index';
-import { Rating } from 'src/domain/product/entity/rate';
 import { IProductGroupRepository } from 'src/domain/product/interface/IProduct-group.repository';
 import { IProductRepository } from 'src/domain/product/interface/IProduct.repository';
 import { IPropertyIndexRepository } from 'src/domain/product/interface/IProperty-index.repository';
@@ -32,11 +31,13 @@ import {
   BadRequestExceptionMessage,
   NotFoundExceptionMessage,
 } from 'src/infrastructure/middleware/exceptions/exception.constants';
+import { ProductImageDto } from '../dto/product-image.dto';
 
 export class CreateProductCommand {
   constructor(
     public name: string,
-    public seo_name: DualLanguageText,
+    public seo_name_fa: string,
+    public seo_name_en: string,
     public description: DualLanguageText,
     public model_id: string,
     public brand: string,
@@ -44,9 +45,7 @@ export class CreateProductCommand {
     public subcategory: string,
     public color: ProductColor,
     public tags: Array<string>,
-    public rating: Rating,
-    public custom_id: string,
-    public images: Array<ProductImage>,
+    public images: Array<ProductImageDto>,
     public price: Price,
     public availability: ProductAvailability,
     public product_group: string,
@@ -98,7 +97,6 @@ export class CreateProductHandler
       throw new NotFoundException(NotFoundExceptionMessage);
 
     let foundTags = new Array<string>();
-
     if (command.is_published && !command.is_draft) {
       for await (const tag of command.tags) {
         let foundTag = await this.tagRepo.findOne(tag);
@@ -137,9 +135,9 @@ export class CreateProductHandler
     let images = new Array<ProductImage>();
     if (command.images.length > 0) {
       for await (const image of command.images) {
-        let foundImage = await this.fileService.getFileDetail(image.url.url);
+        let foundImage = await this.fileService.getFileDetail(image.url);
         let foundThumbnail = await this.fileService.getFileDetail(
-          image.thumbnail.url,
+          image.thumbnail,
         );
 
         images.push({
@@ -155,7 +153,7 @@ export class CreateProductHandler
 
     let newProduct = new Product();
     newProduct.name = command.name;
-    newProduct.seo_name = command.seo_name;
+    newProduct.seo_name = { fa: command.seo_name_fa, en: command.seo_name_en };
     newProduct.model_id = foundModel.id;
     newProduct.brand = foundBrand.id;
     newProduct.category = foundCategory.id;
@@ -165,7 +163,8 @@ export class CreateProductHandler
     newProduct.custom_id = custom_id;
     newProduct.availability = command.availability;
     newProduct.color = command.color;
-    // newProduct.videos = command.videos;
+    newProduct.rating = { score: 0, stars: 0, total_ratings: 0 };
+    newProduct.videos = command.videos;
     newProduct.features = command.features;
     newProduct.properties = command.properties;
     newProduct.admin_preferred_related_products = foundRelatedProducts;

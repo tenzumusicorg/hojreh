@@ -1,4 +1,4 @@
-import { ApiProperty, PartialType } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   IsBoolean,
@@ -8,8 +8,6 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { Types } from 'mongoose';
-import { CreateProductDto } from './create-product.dto';
 import { ProductAvailabilityDto } from './product-availability.schema';
 import { ProductImageDto } from './product-image.dto';
 import { ProductPropertiesDto } from './properties.dto';
@@ -20,9 +18,7 @@ import { ProductPriceReqDto } from './price.dto';
 import { ProductFeatureDto } from './features.dto';
 import { DualLanguageTextDto } from 'src/domain/content/dto/dual-language.dto';
 
-export class UpdateProductDto extends PartialType(CreateProductDto) {}
-
-export class UpdateProductReqDto {
+export class UpdateProductDto {
   @ApiProperty({ type: String, example: '6406f19211c2440bc2e12f1b' })
   @IsNotEmpty()
   @IsMongoId()
@@ -168,7 +164,7 @@ export class UpdateProductReqDto {
   })
   @IsOptional()
   @IsMongoId({ each: true })
-  admin_preferred_related_products: Array<Types.ObjectId>;
+  admin_preferred_related_products: Array<string>;
 
   @ApiProperty({
     example: true,

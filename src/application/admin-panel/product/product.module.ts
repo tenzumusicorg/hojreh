@@ -9,8 +9,19 @@ import CategoryDomainModule from 'src/domain/category/category.module';
 import SubCategoryDomainModule from 'src/domain/subcategory/subcategory.module';
 import TagDomainModule from 'src/domain/tag/tag.module';
 import ColorDomainModule from 'src/domain/color/color.module';
+import { UpdateProductHandler } from './command/update-product.command';
+import ProductService from './product.service';
+import { UpdateProductPriceByExcelHandler } from './command/update-product-price-excel.command';
+import { UpdateProductPriceHandler } from './command/update-product-price.command';
+import { FileModule } from 'src/infrastructure/file/file.module';
+import ProductController from './product.controller';
 
-export const commandHandlers = [CreateProductHandler];
+export const commandHandlers = [
+  CreateProductHandler,
+  UpdateProductHandler,
+  UpdateProductPriceByExcelHandler,
+  UpdateProductPriceHandler,
+];
 export const queryHandlers = [];
 
 @Module({
@@ -26,8 +37,8 @@ export const queryHandlers = [];
     BrandDomainModule,
     ColorDomainModule,
   ],
-  controllers: [],
-  providers: [...commandHandlers, ...queryHandlers],
+  controllers: [ProductController],
+  providers: [...commandHandlers, ...queryHandlers, ProductService],
   exports: [],
 })
 export default class ProductModule {}

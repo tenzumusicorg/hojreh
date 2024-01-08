@@ -35,7 +35,7 @@ export class ProductColorReqDto {
   })
   @IsMongoId()
   @IsOptional()
-  base_color: Color;
+  base_color: string;
 }
 
 export class ColorDto {

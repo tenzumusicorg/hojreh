@@ -109,7 +109,6 @@ export class CategoryController {
     res.url = await this.fileService.uploadFile(uploadDto);
     res.mim_type = file.mimetype;
     res.size = file.size;
-    res;
     return res;
   }
 
@@ -142,7 +141,6 @@ export class CategoryController {
     res.url = await this.fileService.uploadFile(uploadDto);
     res.mim_type = file.mimetype;
     res.size = file.size;
-    res;
     return res;
   }
 
