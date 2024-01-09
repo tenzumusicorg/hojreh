@@ -10,6 +10,7 @@ import TagModule from './tag/tag.module';
 import ColorModule from './color/color.module';
 import StaticModule from './static/static.module';
 import ProductModule from './product/product.module';
+import CommentModule from './comment/comment.module';
 
 const routes: Routes = [
   {
@@ -25,6 +26,7 @@ const routes: Routes = [
       { path: '/color', module: ColorModule },
       { path: '/static', module: StaticModule },
       { path: '/product', module: ProductModule },
+      { path: '/product/comments', module: CommentModule },
     ],
   },
 ];
@@ -42,6 +44,7 @@ const routes: Routes = [
     ColorModule,
     StaticModule,
     ProductModule,
+    CommentModule,
   ],
   controllers: [],
   providers: [],

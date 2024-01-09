@@ -9,6 +9,9 @@ import { IPropertyIndexRepository } from './interface/IProperty-index.repository
 import { PropertyIndexRepository } from './repository/property-index.repository';
 import { ProductGroupSchema } from './schema/product-group.schema';
 import { PropertyIndexSchema } from './schema/property.index.schema';
+import { ICommentRepository } from './interface/IComment.repository';
+import CommentRepository from './repository/comment.repository';
+import { ProductCommentSchema } from './schema/product-comment.schema';
 
 @Module({
   imports: [
@@ -24,6 +27,10 @@ import { PropertyIndexSchema } from './schema/property.index.schema';
       {
         name: 'PropertyIndex',
         schema: PropertyIndexSchema,
+      },
+      {
+        name: 'Comment',
+        schema: ProductCommentSchema,
       },
     ]),
   ],
@@ -41,6 +48,10 @@ import { PropertyIndexSchema } from './schema/property.index.schema';
       provide: IPropertyIndexRepository,
       useClass: PropertyIndexRepository,
     },
+    {
+      provide: ICommentRepository,
+      useClass: CommentRepository,
+    },
     ProductRepository,
   ],
   exports: [
@@ -48,6 +59,7 @@ import { PropertyIndexSchema } from './schema/property.index.schema';
     ProductRepository,
     IProductGroupRepository,
     IPropertyIndexRepository,
+    ICommentRepository,
   ],
 })
 export default class ProductDomainModule {}

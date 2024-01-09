@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Schema as MongooseSchema, Document, HydratedDocument } from 'mongoose';
-import paginate from 'mongoose-paginate-v2';
+import { Schema as MongooseSchema, HydratedDocument } from 'mongoose';
+import * as paginate from 'mongoose-paginate-v2';
 import { ProductModel } from './product.schema';
 import { UserModel } from 'src/domain/user/schema/user.schema';
 import { CommentStatusEnum } from '../constant/comment-status.enum';
@@ -50,4 +50,5 @@ export type ProductDocument = HydratedDocument<ProductCommentModel>;
 export const ProductCommentSchema = SchemaFactory.createForClass(
   ProductCommentModel,
 ).set('versionKey', false);
+
 ProductCommentSchema.plugin(paginate);

@@ -3,7 +3,7 @@ import { ProductCommentItemRatingDto } from './comment.dto';
 import { CommentStatusEnum } from 'src/domain/product/constant/comment-status.enum';
 import { ProductDto } from '../../product/dto/product.dto';
 
-export class UserProductCommentItemDto {
+export class UserCommentItemDto {
   @ApiProperty({
     example: '64106fe12994b8fbd0423189',
   })
@@ -37,12 +37,12 @@ export class UserProductCommentItemDto {
   @ApiProperty({
     example: new Date().toDateString(),
   })
-  date: string;
+  date: Date;
 
   @ApiProperty({
     example: CommentStatusEnum.NEW,
   })
-  status: string;
+  status: CommentStatusEnum;
 
   @ApiProperty({
     type: ProductDto,
@@ -50,10 +50,10 @@ export class UserProductCommentItemDto {
   product: ProductDto;
 }
 
-export class GetUserProductCommentsResDto {
+export class UserCommentListDto {
   @ApiProperty({
-    type: UserProductCommentItemDto,
+    type: UserCommentItemDto,
     isArray: true,
   })
-  items: Array<UserProductCommentItemDto>;
+  items: Array<UserCommentItemDto>;
 }

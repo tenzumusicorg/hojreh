@@ -1,6 +1,6 @@
 import { CommentStatusEnum } from '../constant/comment-status.enum';
 
-export class ProductComment {
+export class Comment {
   id: string;
   product_id: string;
   user_id: string;

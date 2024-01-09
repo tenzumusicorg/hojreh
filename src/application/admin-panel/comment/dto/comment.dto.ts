@@ -88,7 +88,7 @@ export class CommentDto {
   @ApiProperty({
     example: CommentStatusEnum.NEW,
   })
-  status: string;
+  status: CommentStatusEnum;
 
   @ApiProperty({
     type: ProductCommentItemRatingDto,
@@ -98,7 +98,7 @@ export class CommentDto {
   @ApiProperty({
     example: new Date().toDateString(),
   })
-  date: string;
+  date: Date;
 
   @ApiProperty({
     type: CommentProductDto,
